@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('mall_id')->unsigned();
             $table->foreignId('staff_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('mall_id')->references('id')->on('malls');
             $table->foreign('staff_id')->references('id')->on('staffs');

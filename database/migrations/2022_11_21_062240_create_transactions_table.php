@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->unsigned();
             $table->foreignId('reservation_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

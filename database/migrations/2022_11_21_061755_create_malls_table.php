@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('park_space');
             $table->integer('reserve_space');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
