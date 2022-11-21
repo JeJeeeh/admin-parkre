@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('user_id')->unsigned();
             $table->foreignId('segmentation_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('segmentation_id')->references('id')->on('segmentations');

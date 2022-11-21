@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone');
             $table->foreignId('role_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('role_id')->references('id')->on('roles');
         });
