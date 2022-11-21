@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('price');
+            $table->foreignId('user_id')->unsigned();
+            $table->foreignId('reservation_id')->unsigned();
             $table->timestamps();
         });
     }

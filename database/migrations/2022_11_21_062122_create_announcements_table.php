@@ -15,7 +15,15 @@ return new class extends Migration
     {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
+            $table->string('header');
+            $table->string('content');
+            $table->integer('status');
+            $table->foreignId('mall_id')->unsigned();
+            $table->foreignId('staff_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('mall_id')->references('id')->on('malls');
+            $table->foreign('staff_id')->references('id')->on('staffs');
         });
     }
 

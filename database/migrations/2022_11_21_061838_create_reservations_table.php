@@ -15,7 +15,16 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('initial_price');
+            $table->bigInteger('price');
+            $table->date('date');
+            $table->integer('status');
+            $table->foreignId('user_id')->unsigned();
+            $table->foreignId('segmentation_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('segmentation_id')->references('id')->on('segmentations');
         });
     }
 
