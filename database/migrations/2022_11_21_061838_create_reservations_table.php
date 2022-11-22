@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('initial_price');
             $table->bigInteger('price');
-            $table->date('date');
             $table->integer('status');
             $table->foreignId('user_id')->unsigned();
             $table->foreignId('segmentation_id')->unsigned();

@@ -17,7 +17,12 @@ class SegmentationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'park_space' => $this->faker->numberBetween(50, 100),
+            'reserve_space' => $this->faker->numberBetween(1, 50),
+            'mall_id' => $this->faker->numberBetween(1, 10),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

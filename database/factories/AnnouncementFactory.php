@@ -17,7 +17,13 @@ class AnnouncementFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'header' => $this->faker->sentence,
+            'content' => $this->faker->paragraph,
+            'status' => $this->faker->numberBetween(0, 1),
+            'mall_id' => $this->faker->numberBetween(1, 10),
+            'staff_id' => $this->faker->numberBetween(1, 10),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
