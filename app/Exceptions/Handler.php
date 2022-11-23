@@ -46,5 +46,50 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+        $this->renderable(function (Throwable $e) {
+
+            if (request()->wantsJson()) {
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\BadRequestHttpException) {
+                    return response()->json([
+                        'message' => 'Bad request.'
+                    ], 400);
+                }
+
+                if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                    return response()->json([
+                        'message' => 'Unauthenticated.'
+                    ], 401);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
+                    return response()->json([
+                        'message' => 'Unauthorized.'
+                    ], 401);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException) {
+                    return response()->json([
+                        'message' => 'Access denied.'
+                    ], 403);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                    return response()->json([
+                        'message' => 'Not found.'
+                    ], 404);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+                    return response()->json([
+                        'message' => 'Method not allowed.'
+                    ], 405);
+                }
+
+                return response()->json([
+                    'message' => 'Server error.',
+                    'error' => $e->getMessage()
+                ], $e->getCode() ?: 500);
+            }
+        });
     }
 }
