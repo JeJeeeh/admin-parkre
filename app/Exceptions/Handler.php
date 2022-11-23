@@ -51,44 +51,43 @@ class Handler extends ExceptionHandler
             if (request()->wantsJson()) {
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\BadRequestHttpException) {
                     return response()->json([
-                        'message' => 'Bad request.'
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
                     ], 400);
-                }
-
-                if ($e instanceof \Illuminate\Auth\AuthenticationException) {
-                    return response()->json([
-                        'message' => 'Unauthenticated.'
-                    ], 401);
                 }
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
                     return response()->json([
-                        'message' => 'Unauthorized.'
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
                     ], 401);
                 }
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException) {
                     return response()->json([
-                        'message' => 'Access denied.'
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
                     ], 403);
                 }
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
                     return response()->json([
-                        'message' => 'Not found.'
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
                     ], 404);
                 }
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
                     return response()->json([
-                        'message' => 'Method not allowed.'
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
                     ], 405);
                 }
 
                 return response()->json([
-                    'message' => 'Server error.',
-                    'error' => $e->getMessage()
-                ], $e->getCode() ?: 500);
+                    'status' => 500,
+                    'message' => $e->getMessage()
+                ], 500);
             }
         });
     }
