@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 // shared routes
@@ -15,4 +16,11 @@ Route::post('register', [SiteController::class, 'doRegister'])->name('doRegister
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
+});
+
+Route::prefix('staff')->group(function () {
+    Route::get('/', [StaffController::class, 'index'])->name('staff.home');
+    Route::get('/detail/{id}', [StaffController::class, 'detailReservation'])->name('staff.reservationDetail');
+    Route::get('/announcement', [StaffController::class, 'viewAnnouncement'])->name('staff.announcement');
+    Route::get('/announcemet/{id}', [StaffController::class, 'detailAnnouncement'])->name('staff.announcementDetail');
 });
