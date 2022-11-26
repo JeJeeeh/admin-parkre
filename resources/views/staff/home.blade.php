@@ -3,8 +3,10 @@
 @section('content')
     <div class="mt-16 py-8 px-4">
         <p class="text-semibold text-3xl">Reservation List</p>
-        @if ($listReservasi != null)
-            <div class="mt-8">
+        <div class="mt-8">
+            @if (count($listReservasi) == null)
+                <p class="text-red-500 text-2xl">No Reservation!</p>
+            @else
                 <table class="table table-compact table-striped w-full">
                     <thead>
                         <tr>
@@ -28,9 +30,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-        @else
-            <h1>No Reservation</h1>
-        @endif
+            @endif
+        </div>
     </div>
 @endsection

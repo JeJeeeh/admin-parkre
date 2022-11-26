@@ -7,7 +7,7 @@
                 <p class="text-semibold text-3xl">Announcement List</p>
             </div>
             <div>
-                <a href="{{ route('staff.home') }}">
+                <a href="{{ route('staff.addAnnouncement') }}">
                     <div class="btn btn-primary">
                         Add Announcement
                     </div>

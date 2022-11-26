@@ -23,7 +23,8 @@
                 <li><a class="{{ $sidebar == 'announcement' ? 'active' : '' }}"
                         href="{{ route('staff.announcement') }}">List Pengumuman & Tambah Berita Acara</a>
                 </li>
-                <li><a class="{{ $sidebar == 'report' ? 'active' : '' }}">List Laporan</a></li>
+                <li><a class="{{ $sidebar == 'report' ? 'active' : '' }} " href="{{ route('staff.report') }}">List
+                        Laporan</a></li>
                 {{-- <li><a>Berita Acara</a></li> --}}
             </ul>
         </div>
