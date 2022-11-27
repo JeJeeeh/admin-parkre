@@ -32,4 +32,9 @@ class Mall extends Model
     {
         return $this->hasMany(Segmentation::class);
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
 }
