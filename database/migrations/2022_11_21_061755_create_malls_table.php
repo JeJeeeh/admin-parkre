@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('malls', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->string('address')->nullable();
             $table->integer('park_space');
             $table->integer('reserve_space');
