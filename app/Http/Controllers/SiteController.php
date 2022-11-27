@@ -51,7 +51,21 @@ class SiteController extends Controller
 
     public function doRegister(Request $req)
     {
-        return back();
+        $req->validate([
+            'email' => 'required | email | unique:users,email',
+            'password' => 'required | confirmed',
+            'password_confirmation' => 'required',
+            'name' => 'required | alpha',
+            'phone' => 'required | numeric | digits_between:12,16',
+        ]);
+
+        $user = new User;
+        $user->email = $req->email;
+        $user->password = Hash::make($req->password);
+        $user->name = $req->name;
+        $user->phone = $req->phone;
+        $user->address = $req->address;
+        return redirect()->route('login')->with('success', 'Register success');
     }
 
     public function logout(Request $req)

@@ -19,7 +19,7 @@ class AnnouncementFactory extends Factory
         return [
             'header' => $this->faker->sentence,
             'content' => $this->faker->paragraph,
-            'status' => $this->faker->numberBetween(0, 1),
+            'status' => $this->faker->numberBetween(0, 2), // 0 = inactive, 1 = active, 2 = all malls
             'mall_id' => $this->faker->numberBetween(1, 10),
             'staff_id' => $this->faker->numberBetween(1, 10),
             'created_at' => now(),

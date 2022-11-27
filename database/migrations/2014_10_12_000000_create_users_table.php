@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('address')->nullable();
             $table->string('phone');
-            $table->string('fcm_token');
-            $table->string('vehicle_plate');
+            $table->string('fcm_token')->nullable();
+            $table->string('vehicle_plate')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

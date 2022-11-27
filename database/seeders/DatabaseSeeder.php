@@ -21,12 +21,12 @@ class DatabaseSeeder extends Seeder
             ['name' => 'customer service', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        \App\Models\User::factory(10)->create();
-        \App\Models\Staff::factory(10)->create();
-        \App\Models\Mall::factory(10)->create();
-        \App\Models\Segmentation::factory(10)->create();
-        \App\Models\Announcement::factory(10)->create();
-        \App\Models\Reservation::factory(10)->create();
-        \App\Models\Transaction::factory(10)->create();
+        \App\Models\User::factory(20)->create();
+        \App\Models\Staff::factory(20)->create();
+        \App\Models\Mall::factory(20)->create();
+        \App\Models\Segmentation::factory(30)->create();
+        \App\Models\Announcement::factory(20)->create();
+        \App\Models\Reservation::factory(20)->create();
+        \App\Models\Transaction::factory(20)->create();
     }
 }
