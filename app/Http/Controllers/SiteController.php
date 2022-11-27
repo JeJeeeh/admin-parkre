@@ -26,33 +26,26 @@ class SiteController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $req->email)->first();
-        dump($user->password);
-        dump(Hash::check($req->password, $user->password));
+        // find staff
+        $activeUser = Staff::where([
+            ['username', '=', $req->email],
+            ['password', '=', Hash::make($req->password)]
+        ])->first();
 
-        // // find staff
-        // $activeUser = Staff::where([
-        //     ['username', '=', $req->email],
-        //     ['password', '=', Hash::make($req->password)]
-        // ])->first();
-
-        // if (!$activeUser) {
-        //     // find user
-        //     $activeUser = User::where([
-        //         ['email', '=', $req->email],
-        //         ['password', '=', Hash::make($req->password)]
-        //     ])->first();
-        //     // if user not found
-        //     if (!$activeUser) {
-        //         return back()->with('error', 'User not found');
-        //     } else {
-        //         $req->session()->put('activeUser', $activeUser);
-        //         return redirect()->route('index');
-        //     }
-        // } else {
-        //     $req->session()->put('activeUser', $activeUser);
-        //     return redirect()->route('index');
-        // }
+        if (!$activeUser) {
+            // find user
+            $activeUser = User::where('email', '=', $req->email)->first();
+            if ($activeUser && Hash::check($req->password, $activeUser->password)) {
+                // login as user
+                $req->session()->put('user', $activeUser);
+                return redirect()->route('customer.home');
+            }
+        } else {
+            // login as staff
+            $req->session()->put('activeUser', $activeUser);
+            return redirect()->route('index');
+        }
+        return back()->with('error', 'User not found');
     }
 
     public function register()
@@ -63,5 +56,11 @@ class SiteController extends Controller
     public function doRegister(Request $req)
     {
         return back();
+    }
+
+    public function logout(Request $req)
+    {
+        $req->session()->forget('activeUser');
+        return redirect()->route('index');
     }
 }
