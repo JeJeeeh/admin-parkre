@@ -27,24 +27,20 @@ class SiteController extends Controller
         ]);
 
         // find staff
-        $activeUser = Staff::where([
-            ['username', '=', $req->email],
-            ['password', '=', Hash::make($req->password)]
-        ])->first();
-
-        if (!$activeUser) {
-            // find user
-            $activeUser = User::where('email', '=', $req->email)->first();
-            if ($activeUser && Hash::check($req->password, $activeUser->password)) {
-                // login as user
-                $req->session()->put('user', $activeUser);
-                return redirect()->route('customer.home');
-            }
-        } else {
-            // login as staff
+        $activeUser = Staff::where('username', '=', $req->email)->first();
+        if ($activeUser && Hash::check($req->password, $activeUser->password)) {
             $req->session()->put('activeUser', $activeUser);
-            return redirect()->route('index');
+            return redirect()->route('staff.home');
         }
+
+        // find user
+        $activeUser = User::where('email', '=', $req->email)->first();
+        if ($activeUser && Hash::check($req->password, $activeUser->password)) {
+            // login as user
+            $req->session()->put('user', $activeUser);
+            return redirect()->route('customer.home');
+        }
+
         return back()->with('error', 'User not found');
     }
 
