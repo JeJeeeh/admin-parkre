@@ -20,6 +20,8 @@ class SegmentationFactory extends Factory
             'name' => $this->faker->name,
             'park_space' => $this->faker->numberBetween(50, 100),
             'reserve_space' => $this->faker->numberBetween(1, 50),
+            'initial_price' => $this->faker->numberBetween(5000, 50000),
+            'price' => $this->faker->numberBetween(5000, 50000),
             'mall_id' => $this->faker->numberBetween(1, 10),
             'created_at' => now(),
             'updated_at' => now(),

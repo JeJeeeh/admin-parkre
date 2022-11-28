@@ -17,7 +17,8 @@ class ReservationFactory extends Factory
     public function definition()
     {
         return [
-            'initial_price' => $this->faker->numberBetween(5000, 50000),
+            'start_time' => $this->faker->time(),
+            'end_time' => $this->faker->time(),
             'price' => $this->faker->numberBetween(5000, 50000),
             'status' => $this->faker->numberBetween(0, 1),
             'user_id' => $this->faker->numberBetween(1, 10),
