@@ -13,18 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->dateTime('verified_at')->nullable();
-            $table->string('password');
-            $table->string('address')->nullable();
-            $table->string('phone');
-            $table->string('fcm_token')->nullable();
-            $table->string('vehicle_plate')->nullable();
+            $table->string('title');
+            $table->foreignId('staff_id')->unsigned();
+            $table->foreignId('mall_id')->unsigned();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('staff_id')->references('id')->on('staffs');
+            $table->foreign('mall_id')->references('id')->on('malls');
         });
     }
 
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('jobs');
     }
 };

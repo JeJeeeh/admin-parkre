@@ -31,4 +31,9 @@ class Staff extends Model
     {
         return $this->hasMany(Announcement::class);
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
 }

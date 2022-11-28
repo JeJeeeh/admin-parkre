@@ -28,8 +28,13 @@ class Mall extends Model
         return $this->hasMany(Announcement::class);
     }
 
-    public function segmentation()
+    public function segmentations()
     {
         return $this->hasMany(Segmentation::class);
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
     }
 }

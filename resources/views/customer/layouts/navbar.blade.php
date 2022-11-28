@@ -20,7 +20,7 @@
           <li><a>Item 3</a></li>
         </ul>
       </div>
-      <a href="{{ route('index') }}" class="btn btn-ghost normal-case text-xl">ParkRe</a>
+      <a href="{{ route('customer.home') }}" class="btn btn-ghost normal-case text-xl">ParkRe</a>
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal p-0">
@@ -71,7 +71,12 @@
                 </a>
             </li>
             <li><a>Settings</a></li>
-            <li><a href="{{ route('logout') }}">Logout</a></li>
+            <li>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <input type="submit" value="Logout">
+                </form>
+            </li>
         </ul>
     </div>
   </div>

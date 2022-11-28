@@ -28,13 +28,13 @@
                     <img src="https://placeimg.com/400/225/arch" alt="Shoes" class="rounded-xl" />
                 </figure>
                 <div class="card-body items-center text-center">
-                <h2 class="card-title">{{ $mall->name }}</h2>
-                <p>{{ $mall->address }}</p>
-                <div class="card-actions">
-                    <a href="{{ route('customer.mall.detail', $mall->slug) }}">
-                        <button class="btn btn-primary">See Now</button>
-                    </a>
-                </div>
+                    <h2 class="card-title">{{ $mall->name }}</h2>
+                    <p>{{ $mall->address }}</p>
+                    <div class="card-actions">
+                        <a href="{{ route('customer.mall.detail', $mall->slug) }}">
+                            <button class="btn btn-primary">See Now</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         @endforeach

@@ -33,5 +33,5 @@ Route::prefix('staff')->group(function () {
 
 Route::prefix('home')->group(function () {
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
-    Route::get('{mall-slug}', [CustomerController::class, 'mallDetail'])->name('customer.mall.detail');
+    Route::get('/{mall_slug}', [CustomerController::class, 'mallDetail'])->name('customer.mall.detail');
 });
