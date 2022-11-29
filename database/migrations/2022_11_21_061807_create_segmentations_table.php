@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('park_space');
             $table->integer('reserve_space');
+            $table->bigInteger('initial_price');
+            $table->bigInteger('price');
             $table->foreignId('mall_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
