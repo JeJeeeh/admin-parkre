@@ -27,6 +27,7 @@ Route::prefix('staff')->group(function () {
     Route::get('/announcement', [StaffController::class, 'viewAnnouncement'])->name('staff.announcement');
     Route::get('/announcemet/{id}', [StaffController::class, 'detailAnnouncement'])->name('staff.announcementDetail');
     Route::get('/addAnnouncement', [StaffController::class, 'addAnnouncement'])->name('staff.addAnnouncement');
+    Route::post('/addAnnouncement', [StaffController::class, 'doAddAnnouncement'])->name('staff.doAddAnnouncement');
 
     Route::get('/report', [StaffController::class, 'viewReport'])->name('staff.report');
 });

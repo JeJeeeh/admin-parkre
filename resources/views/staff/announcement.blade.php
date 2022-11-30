@@ -33,7 +33,8 @@
                                 {{-- <td class="text-center break-all">{{ $announcement->content }}</td> --}}
                                 <td class="text-center">
                                     <a href="{{ route('staff.announcementDetail', $announcement->id) }}"
-                                        class="btn btn-primary">Detail</a>
+                                        class="btn btn-primary">Detail
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

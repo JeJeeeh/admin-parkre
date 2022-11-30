@@ -13,7 +13,7 @@
         <div class="drawer-side">
             <label for="my-drawer-2" class="drawer-overlay"></label>
 
-            <ul class="menu p-4 w-80 bg-base-100 text-base-content space-y-2">
+            <ul class="menu p-4 w-80 bg-base-200 text-base-content space-y-2">
                 <li class="mb-4">
                     <a class="normal-case text-xl font-bold">ParkRe</a>
                 </li>

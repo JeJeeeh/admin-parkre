@@ -28,8 +28,8 @@
                     <tr>
                         <td class="text-center">{{ $reservasi->user->name }}</td>
                         <td class="text-center">{{ $reservasi->segmentation->name }}</td>
-                        <td class="text-center">Rp. {{ $reservasi->initial_price }}</td>
-                        <td class="text-center">Rp. {{ $reservasi->price }}</td>
+                        <td class="text-center">Rp. {{ $reservasi->segmentation->initial_price }}</td>
+                        <td class="text-center">Rp. {{ $reservasi->segmentation->price }}</td>
                     </tr>
                 </tbody>
             </table>

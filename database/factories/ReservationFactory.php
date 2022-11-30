@@ -23,7 +23,7 @@ class ReservationFactory extends Factory
             'status' => $this->faker->numberBetween(0, 1),
             'user_id' => $this->faker->numberBetween(1, 10),
             'segmentation_id' => $this->faker->numberBetween(1, 10),
-            'created_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now', $timezone = null), // DateTime('2003-03-15 02:00:49', 'Africa/Lagos'),
             'updated_at' => now(),
         ];
     }

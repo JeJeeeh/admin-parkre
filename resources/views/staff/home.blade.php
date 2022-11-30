@@ -11,8 +11,9 @@
                     <thead>
                         <tr>
                             <th class="text-center">No</th>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Segment</th>
+                            <th class="text-center">Segment Name</th>
+                            <th class="text-center">Start Time</th>
+                            <th class="text-center">End Time</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -20,8 +21,9 @@
                         @foreach ($listReservasi as $reservasi)
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $reservasi->user->name }}</td>
-                                <td class="text-center">{{ $reservasi->segmentation->name }}</td>
+                                <td class="text-center">{{ $reservasi->name }}</td>
+                                <td class="text-center">{{ $reservasi->start_time }}</td>
+                                <td class="text-center">{{ $reservasi->end_time }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('staff.reservationDetail', $reservasi->id) }}"
                                         class="btn btn-primary">Detail</a>
