@@ -58,8 +58,8 @@ class StaffController extends Controller
     public function addAnnouncement()
     {
         $sidebar = 'announcement';
-        $listSegment = Segmentation::all();
-        return view('staff.addAnnouncement', compact('sidebar', 'listSegment'));
+        $listMall = Mall::all();
+        return view('staff.addAnnouncement', compact('sidebar', 'listMall'));
     }
 
     public function viewReport()
@@ -88,16 +88,19 @@ class StaffController extends Controller
 
     public function doAddAnnouncement(Request $req)
     {
+        $activeUser = Session::get('activeUser');
+        $staff_id = $activeUser->id;
         // dd($req->all());
         $req->validate([
-            'title' => 'required',
-            'segment' => 'required',
+            'header' => 'required',
+            'mall' => 'required',
         ]);
 
         $announcement = new Announcement();
-        $announcement->title = $req->title;
+        $announcement->header = $req->header;
         $announcement->content = $req->content;
-        $announcement->segment_id = $req->segment;
+        $announcement->mall_id = $req->mall;
+        $announcement->staff_id = $staff_id;
         $announcement->status = 0; //fixed
         $announcement->save();
 
