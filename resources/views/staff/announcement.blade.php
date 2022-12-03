@@ -7,7 +7,7 @@
                 <p class="text-semibold text-3xl">Announcement List</p>
             </div>
             <div>
-                <a href="{{ route('staff.home') }}">
+                <a href="{{ route('staff.addAnnouncement') }}">
                     <div class="btn btn-primary">
                         Add Announcement
                     </div>
@@ -33,7 +33,8 @@
                                 {{-- <td class="text-center break-all">{{ $announcement->content }}</td> --}}
                                 <td class="text-center">
                                     <a href="{{ route('staff.announcementDetail', $announcement->id) }}"
-                                        class="btn btn-primary">Detail</a>
+                                        class="btn btn-primary">Detail
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

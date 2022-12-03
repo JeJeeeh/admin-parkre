@@ -14,9 +14,10 @@
                 </a>
             </div>
         </div>
-        <div class="mt-8">
-            <p>Header : {{ $announcement->header }}</p>
-            <p>Content : </p>
+        <div class="mt-8 card w-full bg-primary text-primary-content p-4">
+            <p class="font-semibold">Header : </p>
+            <p>{{ $announcement->header }}</p>
+            <p class="font-semibold">Content : </p>
             <p> {{ $announcement->content }}</p>
         </div>
     </div>
