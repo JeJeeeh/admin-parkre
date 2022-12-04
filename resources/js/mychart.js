@@ -1,31 +1,40 @@
 import Chart from 'chart.js/auto';
+import { fetchData } from './fetcher';
 
-const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-];
+async function createChart(id, url, chartName) {
+    try {
+        const rawdata = await fetchData(url);
+        const labels = rawdata.labels
 
-const data = {
-    labels: labels,
-    datasets: [{
-        label: 'My First dataset',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
-    }]
-};
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: chartName,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: rawdata.data,
+            }]
+        };
 
-const config = {
-    type: 'line',
-    data: data,
-    options: {}
-};
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
 
-new Chart(
-    document.getElementById('myChart'),
-    config
-);
+        new Chart(
+            document.getElementById(id),
+            config
+        );
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+fetchData('/staff/reportjson').then(data => {
+    console.log(data);
+});
+createChart('myChart', '/staff/reportjson', 'List Reservation');
+
+
+

@@ -18,13 +18,13 @@
                     <a class="normal-case text-xl font-bold">ParkRe</a>
                 </li>
                 <!-- Sidebar content here -->
-                <li><a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('staff.home') }}">List Reservasi
-                        Tanggal Hari Ini</a></li>
+                <li><a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('staff.home') }}">Today's Reservation
+                        List</a></li>
                 <li><a class="{{ $sidebar == 'announcement' ? 'active' : '' }}"
-                        href="{{ route('staff.announcement') }}">List Pengumuman & Tambah Berita Acara</a>
+                        href="{{ route('staff.announcement') }}">Announcement List</a>
                 </li>
-                <li><a class="{{ $sidebar == 'report' ? 'active' : '' }} " href="{{ route('staff.report') }}">List
-                        Laporan</a></li>
+                <li><a class="{{ $sidebar == 'report' ? 'active' : '' }} " href="{{ route('staff.report') }}">Report
+                        List</a></li>
                 {{-- <li><a>Berita Acara</a></li> --}}
             </ul>
         </div>

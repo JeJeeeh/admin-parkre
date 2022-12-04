@@ -30,6 +30,7 @@ Route::prefix('staff')->group(function () {
     Route::post('/addAnnouncement', [StaffController::class, 'doAddAnnouncement'])->name('staff.doAddAnnouncement');
 
     Route::get('/report', [StaffController::class, 'viewReport'])->name('staff.report');
+    Route::put('/reportjson', [StaffController::class, 'viewReportJSON'])->name('staff.reportjson');
 });
 
 Route::prefix('home')->group(function () {
