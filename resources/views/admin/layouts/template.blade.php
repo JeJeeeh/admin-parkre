@@ -28,7 +28,11 @@
                 <li>
                     <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Mall List</a>
                 </li>
-                <li>Announcement List</li>
+                <li>
+                    <a class="{{ $sidebar == 'announcement' ? 'active' : '' }}"
+                        href="{{ route('admin.announcement') }}">Announcement
+                        List</a>
+                </li>
                 <li>Report List</li>
             </ul>
         </div>

@@ -7,8 +7,8 @@
             <form action="{{ route('admin.searchUser') }}" method="POST">
                 @csrf
                 <input type="text" placeholder="Search" name="search"
-                    class="input input-bordered border-warning w-full max-w-xs placeholder:text-warning" />
-                <button class="btn btn-warning">Search</button>
+                    class="input input-bordered border-primary w-full max-w-xs placeholder:text-primary" />
+                <button class="btn btn-primary">Search</button>
                 </button>
             </form>
         </div>

@@ -5,8 +5,19 @@
         <div class="flex justify-between">
             <div>
                 <p class="text-semibold text-3xl">Mall Detail</p>
+                {{-- success message --}}
+                @if (Session::has('success'))
+                    <div class="alert alert-success w-full">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
             </div>
             <div>
+                <a href="{{ route('admin.editMall', $mall->id) }}">
+                    <div class="btn btn-primary">
+                        Edit
+                    </div>
+                </a>
                 <a href="{{ route('admin.mall') }}">
                     <div class="btn btn-error">
                         Back
@@ -14,7 +25,7 @@
                 </a>
             </div>
         </div>
-        <div class="mt-2 flex flex-col-2 bg-warning p-4 rounded-md">
+        <div class="mt-2 flex flex-col-2 bg-primary p-4 rounded-md">
             <div>
                 <p class="text-semibold text-xl">Name</p>
                 <p class="text-semibold text-xl">Address</p>
@@ -28,7 +39,11 @@
                 <p class="text-xl"> : {{ $mall->reserve_space }}</p>
             </div>
         </div>
-        <p class="text-semibold text-3xl mt-4">Segmentation List</p>
+        <div class="flex justify-between mt-4">
+            <div>
+                <p class="text-semibold text-3xl">Segmentation List</p>
+            </div>
+        </div>
         <div class="mt-8">
             @if (count($listSegment) == null)
                 <p class="text-red-500 text-2xl">No Segmentation!</p>

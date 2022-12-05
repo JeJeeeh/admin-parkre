@@ -6,18 +6,23 @@
             <div>
                 <p class="text-semibold text-3xl">MALL LIST</p>
             </div>
-            <div>
+            <div class="flex justify-between space-x-2">
                 <form action="{{ route('admin.addMall') }}">
-                    <button class="btn btn-warning">ADD MALL</button>
+                    <button class="btn btn-primary">ADD MALL</button>
                 </form>
+                <a href="{{ route('admin.addSegmentation') }}">
+                    <div class="btn btn-primary">
+                        Add Segmentation
+                    </div>
+                </a>
             </div>
         </div>
         <div class="mt-2">
             <form action="{{ route('admin.searchMall') }}" method="POST">
                 @csrf
                 <input type="text" placeholder="Search" name="search"
-                    class="input input-bordered border-warning w-full max-w-xs placeholder:text-warning" />
-                <button class="btn btn-warning">Search</button>
+                    class="input input-bordered border-primary w-full max-w-xs placeholder:text-primary" />
+                <button class="btn btn-primary">Search</button>
                 </button>
             </form>
         </div>
