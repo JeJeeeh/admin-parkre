@@ -19,6 +19,12 @@ Route::post('/logout', [SiteController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
+    Route::post('/', [AdminController::class, 'searchUser'])->name('admin.searchUser');
+    Route::get('/mall', [AdminController::class, 'mallList'])->name('admin.mall');
+    Route::post('/mall', [AdminController::class, 'searchMall'])->name('admin.searchMall');
+    Route::get('/mall/add', [AdminController::class, 'mallDetail'])->name('admin.addMall');
+    Route::get('/mall/{id}', [AdminController::class, 'mallDetail'])->name('admin.mallDetail');
+    Route::get('/addMall', [AdminController::class, 'addMall'])->name('admin.addMall');
 });
 
 Route::prefix('staff')->group(function () {
