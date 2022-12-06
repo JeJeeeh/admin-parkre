@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Announcement::factory(20)->create();
         \App\Models\Reservation::factory(20)->create();
         \App\Models\Transaction::factory(20)->create();
+        \App\Models\Review::factory(20)->create();
     }
 }
