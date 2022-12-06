@@ -13,7 +13,11 @@
         <div class="flex flex-col space-y-6 w-1/4">
             <div class="flex justify-center">
                 <figure>
-                    <img class="rounded-full" src="https://placeimg.com/200/200/arch" alt="Mall Image"/>
+                    @if ($activeUser->image_url == null)
+                        <img src="{{ asset('images/default.png') }}" />
+                    @else
+                        <img class="rounded-full" src="{{ asset('storage/' . $activeUser->image_url) }}" />
+                    @endif
                 </figure>
             </div>
             <input type="file" name="image" class="file-input file-input-bordered w-full max-w-xs" />

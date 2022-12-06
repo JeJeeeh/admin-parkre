@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $req)
     {
+        $activeUser = $req->session()->get('activeUser');
         $newAnnouncement = Announcement::where('status', '=', '2')->orderBy('created_at')->first();
         $malls = Mall::all();
-        return view('customer.home', compact('newAnnouncement', 'malls'));
+        return view('customer.home', compact('newAnnouncement', 'malls', 'activeUser'));
     }
 
     public function searchMall(Request $req)
@@ -28,16 +29,17 @@ class CustomerController extends Controller
         return view('customer.home', compact('malls', 'newAnnouncement'));
     }
 
-    public function mallDetail($mall_slug)
+    public function mallDetail(Request $req)
     {
-        $mall = Mall::where('slug', '=', $mall_slug)->first();
+        $activeUser = $req->session()->get('activeUser');
+        $mall = Mall::where('slug', '=', $req->mall_slug)->first();
         $newAnnouncement = null;
         if ($mall) {
             $newAnnouncement = Announcement::where([
                 ['status', '=', '1'],
                 ['mall_id', '=', $mall->id]
             ])->orWhere('status', '=', '2')->orderBy('created_at')->first();
-            return view('customer.mall.detail', compact('mall', 'newAnnouncement'));
+            return view('customer.mall.detail', compact('mall', 'newAnnouncement', 'activeUser'));
         }
         return redirect()->route('customer.home');
     }
@@ -142,11 +144,11 @@ class CustomerController extends Controller
                 $activeUser->name = $req->name;
                 $activeUser->address = $req->address;
                 $activeUser->phone = $req->phone;
-                // if ($req->image) {
-                //     $imageName = time() . '.' . $req->image->extension();
-                //     $req->image->move(public_path('images'), $imageName);
-                //     $activeUser->image = $imageName;
-                // }
+                if ($req->image) {
+                    $imageName = $activeUser->email . '.' . $req->image->extension();
+                    $req->image->storeAs("userProfiles", $imageName, 'public');
+                    $activeUser->image_url = "userProfiles/" . $imageName;
+                }
                 $activeUser->save();
                 $req->session()->put('activeUser', $activeUser);
                 return back()->with('success', 'Profile updated successfully');
