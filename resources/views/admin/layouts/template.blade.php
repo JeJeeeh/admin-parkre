@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @push('chart_script')
-    @vite('resources/js/staff_chart.js')
+    {{--  --}}
 @endpush
 
 @section('main')
@@ -11,7 +11,7 @@
         <div class="drawer-content flex flex-col">
             <!-- Page content here -->
             <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
-            @include('staff.layouts.navbar')
+            @include('admin.layouts.navbar')
             @yield('content')
         </div>
         <div class="drawer-side">
@@ -22,14 +22,14 @@
                     <a class="normal-case text-xl font-bold">ParkRe</a>
                 </li>
                 <!-- Sidebar content here -->
-                <li><a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('staff.home') }}">Today's Reservation
-                        List</a></li>
-                <li><a class="{{ $sidebar == 'announcement' ? 'active' : '' }}"
-                        href="{{ route('staff.announcement') }}">Announcement List</a>
+                <li>
+                    <a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('admin.home') }}">User List</a>
                 </li>
-                <li><a class="{{ $sidebar == 'report' ? 'active' : '' }} " href="{{ route('staff.report') }}">Report
-                        List</a></li>
-                {{-- <li><a>Berita Acara</a></li> --}}
+                <li>
+                    <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Mall List</a>
+                </li>
+                <li>Announcement List</li>
+                <li>Report List</li>
             </ul>
         </div>
     </div>

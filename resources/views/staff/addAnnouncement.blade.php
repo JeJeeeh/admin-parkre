@@ -33,11 +33,11 @@
                         {{-- <label class="label">
                             <span class="label-text">Select Mall Segmentation</span>
                         </label> --}}
-                        <select class="select w-full" name="segment">
-                            <option disabled selected value="-1">Select Mall Segmentation</option>
-                            <option value="-1">All</option>
-                            @foreach ($listSegment as $segment)
-                                <option value="{{ $segment->id }}">{{ $segment->name }}</option>
+                        <select class="select w-full" name="mall">
+                            <option disabled selected value="-1">Select Mall</option>
+                            {{-- <option value="-1">All</option> --}}
+                            @foreach ($listMall as $mall)
+                                <option value="{{ $mall->id }}">{{ $mall->name }}</option>
                             @endforeach
                         </select>
                     </div>
