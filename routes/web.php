@@ -34,5 +34,23 @@ Route::prefix('staff')->group(function () {
 
 Route::prefix('home')->group(function () {
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [CustomerController::class, 'profile'])->name('customer.profile');
+        Route::get('/edit', [CustomerController::class, 'editProfile'])->name('customer.editProfile');
+        Route::post('/edit', [CustomerController::class, 'doEditProfile'])->name('customer.doEditProfile');
+        Route::prefix('vehicle')->group(function () {
+            Route::get('add', [CustomerController::class, 'addVehicle'])->name('customer.addVehicle');
+            Route::post('add', [CustomerController::class, 'doAddVehicle'])->name('customer.doAddVehicle');
+            Route::post('edit', [CustomerController::class, 'editVehicle'])->name('customer.editVehicle');
+            Route::post('doedit', [CustomerController::class, 'doEditVehicle'])->name('customer.doEditVehicle');
+            Route::post('delete', [CustomerController::class, 'deleteVehicle'])->name('customer.deleteVehicle');
+        });
+    });
+
+    Route::post('/reserve', [CustomerController::class, 'doReserve'])->name('customer.doReserve');
+    Route::get('/payment', [CustomerController::class, 'payment'])->name('customer.payment');
+
+    Route::get('/search', [CustomerController::class, 'searchMall'])->name('customer.search.mall');
     Route::get('/{mall_slug}', [CustomerController::class, 'mallDetail'])->name('customer.mall.detail');
+    Route::get('/{mall_slug}/reserve', [CustomerController::class, 'reserve'])->name('customer.reserve');
 });

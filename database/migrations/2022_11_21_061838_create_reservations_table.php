@@ -19,13 +19,16 @@ return new class extends Migration
             $table->time('end_time');
             $table->bigInteger('price');
             $table->integer('status');
+            $table->date('date');
             $table->foreignId('user_id')->unsigned();
+            $table->foreignId('vehicle_id')->unsigned();
             $table->foreignId('segmentation_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('segmentation_id')->references('id')->on('segmentations');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles');
         });
     }
 

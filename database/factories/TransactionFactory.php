@@ -19,6 +19,7 @@ class TransactionFactory extends Factory
         return [
             'price' => $this->faker->numberBetween(5000, 50000),
             'user_id' => $this->faker->numberBetween(1, 10),
+            'date' => $this->faker->date(),
             'reservation_id' => $this->faker->numberBetween(1, 10),
             'created_at' => now(),
             'updated_at' => now(),

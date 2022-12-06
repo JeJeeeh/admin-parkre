@@ -13,19 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->dateTime('verified_at')->nullable();
-            $table->string('password');
-            $table->string('address')->nullable();
-            $table->string('phone');
-            $table->bigInteger('balance')->default(0);
-            $table->string('fcm_token')->nullable();
-            $table->string('image_url')->nullable();
+            $table->string('plate');
+            $table->string('color')->nullable();
+            $table->foreignId('user_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('vehicles');
     }
 };
