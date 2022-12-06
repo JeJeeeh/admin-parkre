@@ -24,8 +24,8 @@ class UserFactory extends Factory
             'password' => Hash::make('password'),
             'address' => $this->faker->address,
             'phone' => $this->faker->phoneNumber,
+            'balance' => $this->faker->numberBetween(100000, 999999),
             'fcm_token' => 'fcm_token',
-            'vehicle_plate' => 'vehicle_plate',
             'created_at' => now(),
             'updated_at' => now(),
         ];
