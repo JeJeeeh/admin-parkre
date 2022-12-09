@@ -47,7 +47,7 @@ class SiteController extends Controller
         $activeUser = User::where('email', '=', $req->email)->first();
         if ($activeUser && Hash::check($req->password, $activeUser->password)) {
             // login as user
-            $req->session()->put('user', $activeUser);
+            $req->session()->put('activeUser', $activeUser);
             return redirect()->route('customer.home');
         }
 

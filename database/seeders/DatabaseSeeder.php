@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory(20)->create();
+        \App\Models\Vehicle::factory(20)->create();
         \App\Models\Staff::factory(20)->create();
         \App\Models\Mall::factory(20)->create();
         \App\Models\Segmentation::factory(30)->create();

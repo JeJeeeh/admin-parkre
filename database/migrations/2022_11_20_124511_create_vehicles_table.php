@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('malls', function (Blueprint $table) {
+        Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug');
-            $table->string('address')->nullable();
-            $table->integer('park_space');
-            $table->integer('reserve_space');
-            $table->string('image_url')->nullable();
+            $table->string('plate');
+            $table->string('color')->nullable();
+            $table->foreignId('user_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('malls');
+        Schema::dropIfExists('vehicles');
     }
 };

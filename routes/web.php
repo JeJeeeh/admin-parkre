@@ -21,11 +21,6 @@ Route::post('/logout', [SiteController::class, 'logout'])->name('logout');
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
     Route::post('/', [AdminController::class, 'searchUser'])->name('admin.searchUser');
-    Route::get('/mall', [AdminController::class, 'mallList'])->name('admin.mall');
-    Route::post('/mall', [AdminController::class, 'searchMall'])->name('admin.searchMall');
-    Route::get('/mall/add', [AdminController::class, 'mallDetail'])->name('admin.addMall');
-    Route::get('/mall/{id}', [AdminController::class, 'mallDetail'])->name('admin.mallDetail');
-    Route::get('/addMall', [AdminController::class, 'addMall'])->name('admin.addMall');
     Route::prefix('/report')->group(function () {
         Route::get('/', [AdminController::class, 'report'])->name('admin.report');
         Route::put("/transaksi_user", [AdminController::class, 'reportTransaksiUser'])->name('admin.reportTransaksiUser');
@@ -33,6 +28,47 @@ Route::prefix('admin')->group(function () {
         Route::put("/reservasi_customer", [AdminController::class, 'reportReservasiCustomer'])->name('admin.reportReservasiCustomer');
         Route::put("/reservasi_sukses", [AdminController::class, 'reportReservasiSukses'])->name('admin.reportReservasiSukses');
         Route::put("/review_customer", [AdminController::class, 'reportReviewCustomer'])->name('admin.reportReviewCustomer');
+    });
+
+
+    Route::get('/detail/{id}', [AdminController::class, 'userDetail'])->name('admin.userDetail');
+    Route::get('/block/{id}', [AdminController::class, 'blockUser'])->name('admin.blockUser');
+    Route::get('/unblock/{id}', [AdminController::class, 'unblockUser'])->name('admin.unblockUser');
+
+    Route::prefix('/mall')->group(function () {
+        Route::get('/', [AdminController::class, 'mallList'])->name('admin.mall');
+        Route::post('/', [AdminController::class, 'searchMall'])->name('admin.searchMall');
+        Route::get('/add', [AdminController::class, 'addMall'])->name('admin.addMall');
+        Route::post('/add', [AdminController::class, 'doAddMall'])->name('admin.doAddMall');
+        Route::post('/edit', [AdminController::class, 'doEditMall'])->name('admin.doEditMall');
+
+        Route::get('/block/{id}', [AdminController::class, 'blockMall'])->name('admin.blockMall');
+        Route::get('/unblock/{id}', [AdminController::class, 'unblockMall'])->name('admin.unblockMall');
+        Route::get('/edit/{id}', [AdminController::class, 'editMall'])->name('admin.editMall');
+        Route::get('/{id}', [AdminController::class, 'mallDetail'])->name('admin.mallDetail');
+
+        Route::prefix('/segmentation')->group(function () {
+            Route::get('/add', [AdminController::class, 'addSegmentation'])->name('admin.addSegmentation');
+            Route::post('/add', [AdminController::class, 'doAddSegmentation'])->name('admin.doAddSegmentation');
+            Route::post('/edit', [AdminController::class, 'doEditSegmentation'])->name('admin.doEditSegmentation');
+            Route::get('/edit/{id}', [AdminController::class, 'editSegmentation'])->name('admin.editSegmentation');
+            Route::get('/block/{id}', [AdminController::class, 'blockSegmentation'])->name('admin.blockSegmentation');
+            Route::get('/unblock/{id}', [AdminController::class, 'unblockSegmentation'])->name('admin.unblockSegmentation');
+            Route::get('/delete/{id}', [AdminController::class, 'deleteSegmentation'])->name('admin.deleteSegmentation');
+            Route::get('/{id}', [AdminController::class, 'segmentation'])->name('admin.segmentation');
+        });
+    });
+
+    Route::prefix('/announcement')->group(function () {
+        Route::get('/', [AdminController::class, 'announcement'])->name('admin.announcement');
+        Route::get('/add', [AdminController::class, 'addAnnouncement'])->name('admin.addAnnouncement');
+        Route::post('/add', [AdminController::class, 'doAddAnnouncement'])->name('admin.doAddAnnouncement');
+
+        Route::get('/delete/{id}', [AdminController::class, 'deleteAnnouncement'])->name('admin.deleteAnnouncement');
+        Route::get('/restore/{id}', [AdminController::class, 'restoreAnnouncement'])->name('admin.restoreAnnouncement');
+        Route::get('/edit/{id}', [AdminController::class, 'editAnnouncement'])->name('admin.editAnnouncement');
+        Route::post('/doEdit}', [AdminController::class, 'doEditAnnouncement'])->name('admin.doEditAnnouncement');
+        Route::get('/{id}', [AdminController::class, 'announcementDetail'])->name('admin.announcementDetail');
     });
 });
 
@@ -51,5 +87,23 @@ Route::prefix('staff')->group(function () {
 
 Route::prefix('home')->group(function () {
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [CustomerController::class, 'profile'])->name('customer.profile');
+        Route::get('/edit', [CustomerController::class, 'editProfile'])->name('customer.editProfile');
+        Route::post('/edit', [CustomerController::class, 'doEditProfile'])->name('customer.doEditProfile');
+        Route::prefix('vehicle')->group(function () {
+            Route::get('add', [CustomerController::class, 'addVehicle'])->name('customer.addVehicle');
+            Route::post('add', [CustomerController::class, 'doAddVehicle'])->name('customer.doAddVehicle');
+            Route::post('edit', [CustomerController::class, 'editVehicle'])->name('customer.editVehicle');
+            Route::post('doedit', [CustomerController::class, 'doEditVehicle'])->name('customer.doEditVehicle');
+            Route::post('delete', [CustomerController::class, 'deleteVehicle'])->name('customer.deleteVehicle');
+        });
+    });
+
+    Route::post('/reserve', [CustomerController::class, 'doReserve'])->name('customer.doReserve');
+    Route::get('/payment', [CustomerController::class, 'payment'])->name('customer.payment');
+
+    Route::get('/search', [CustomerController::class, 'searchMall'])->name('customer.search.mall');
     Route::get('/{mall_slug}', [CustomerController::class, 'mallDetail'])->name('customer.mall.detail');
+    Route::get('/{mall_slug}/reserve', [CustomerController::class, 'reserve'])->name('customer.reserve');
 });

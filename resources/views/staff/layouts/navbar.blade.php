@@ -11,12 +11,12 @@
                 </div>
             </label>
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                <li>
-                    <form action="{{ route('logout') }} " method="POST">
+                <form action="{{ route('logout') }} " method="POST">
+                    <li>
                         @csrf
                         <input type="submit" value="Logout">
-                    </form>
-                </li>
+                    </li>
+                </form>
             </ul>
         </div>
     </div>
