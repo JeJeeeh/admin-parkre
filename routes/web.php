@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\StaffController;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 // shared routes
@@ -25,7 +26,16 @@ Route::prefix('admin')->group(function () {
     Route::get('/mall/add', [AdminController::class, 'mallDetail'])->name('admin.addMall');
     Route::get('/mall/{id}', [AdminController::class, 'mallDetail'])->name('admin.mallDetail');
     Route::get('/addMall', [AdminController::class, 'addMall'])->name('admin.addMall');
+    Route::prefix('/report')->group(function () {
+        Route::get('/', [AdminController::class, 'report'])->name('admin.report');
+        Route::put("/transaksi_user", [AdminController::class, 'reportTransaksiUser'])->name('admin.reportTransaksiUser');
+        Route::put("/keuntungan_customer", [AdminController::class, 'reportKeuntunganCustomer'])->name('admin.reportKeuntunganCustomer');
+        Route::put("/reservasi_customer", [AdminController::class, 'reportReservasiCustomer'])->name('admin.reportReservasiCustomer');
+        Route::put("/reservasi_sukses", [AdminController::class, 'reportReservasiSukses'])->name('admin.reportReservasiSukses');
+        Route::put("/review_customer", [AdminController::class, 'reportReviewCustomer'])->name('admin.reportReviewCustomer');
+    });
 });
+
 
 Route::prefix('staff')->group(function () {
     Route::get('/', [StaffController::class, 'index'])->name('staff.home');

@@ -1,7 +1,7 @@
 import axios from "axios";
 import Chart from "chart.js/auto";
 
-export const fetchData = async (url) => {
+export const fetchData = (url) => {
     return new Promise((resolve, reject) => {
         const response = axios.put(url);
         response.then((result) => resolve(result.data));
@@ -9,7 +9,23 @@ export const fetchData = async (url) => {
     });
 };
 
-export async function createChart(id, url, chartName) {
+/**
+ * Create a chart
+ * @param {string} id
+ * @param {string} url
+ * @param {string} chartName
+ * @param {boolean} maintainAspectRatio
+ * @param {Object} setBottomValue
+ * @param {boolean} setBottomValue.status
+ * @param {number} setBottomValue.value
+ */
+export async function createChart(
+    id,
+    url,
+    chartName,
+    maintainAspectRatio = true,
+    setBottomValue = { status: false, value: 0 }
+) {
     try {
         const rawdata = await fetchData(url);
         const labels = rawdata.labels;
@@ -26,14 +42,26 @@ export async function createChart(id, url, chartName) {
             ],
         };
 
+        const option = {
+            maintainAspectRatio: maintainAspectRatio,
+            // y: {
+            //     suggestedMin: setBottomValue.value,
+            // },
+        };
+
+        if (setBottomValue.status) {
+            Object.assign(option, { y: {} });
+            Object.assign(option.y, { suggestedMin: setBottomValue.value });
+        }
+
         const config = {
             type: "line",
             data: data,
-            options: {},
+            options: option,
         };
 
         new Chart(document.getElementById(id), config);
     } catch (error) {
-        console.log(error);
+        console.log("Error: ", error);
     }
 }

@@ -1,11 +1,7 @@
 @extends('layouts.template')
 
-@push('chart_script')
-    {{--  --}}
-@endpush
-
 @section('main')
-    <div class="drawer drawer-mobile">
+    <div class="drawer drawer-mobile h-[92.5vh]">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-content flex flex-col">
@@ -29,7 +25,9 @@
                     <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Mall List</a>
                 </li>
                 <li>Announcement List</li>
-                <li>Report List</li>
+                <li>
+                    <a class="{{ $sidebar == 'report' ? 'active' : '' }}" href="{{ route('admin.report') }}">Report List</a>
+                </li>
             </ul>
         </div>
     </div>
