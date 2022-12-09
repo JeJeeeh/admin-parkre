@@ -5,8 +5,19 @@
         <div class="flex justify-between">
             <div>
                 <p class="text-semibold text-3xl">Mall Detail</p>
+                {{-- success message --}}
+                @if (Session::has('success'))
+                    <div class="alert alert-success w-full">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
             </div>
             <div>
+                <a href="{{ route('admin.editMall', $mall->id) }}">
+                    <div class="btn btn-primary">
+                        Edit
+                    </div>
+                </a>
                 <a href="{{ route('admin.mall') }}">
                     <div class="btn btn-error">
                         Back
@@ -14,7 +25,7 @@
                 </a>
             </div>
         </div>
-        <div class="mt-2 flex flex-col-2 bg-warning p-4 rounded-md">
+        <div class="mt-2 flex flex-col-2 bg-primary p-4 rounded-md">
             <div>
                 <p class="text-semibold text-xl">Name</p>
                 <p class="text-semibold text-xl">Address</p>
@@ -28,7 +39,11 @@
                 <p class="text-xl"> : {{ $mall->reserve_space }}</p>
             </div>
         </div>
-        <p class="text-semibold text-3xl mt-4">Segmentation List</p>
+        <div class="flex justify-between mt-4">
+            <div>
+                <p class="text-semibold text-3xl">Segmentation List</p>
+            </div>
+        </div>
         <div class="mt-8">
             @if (count($listSegment) == null)
                 <p class="text-red-500 text-2xl">No Segmentation!</p>
@@ -52,10 +67,21 @@
                                 <td class="text-center">{{ $segment->park_space }}</td>
                                 <td class="text-center">{{ $segment->reserve_space }}</td>
                                 <td class="text-center">Rp. {{ $segment->initial_price }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('staff.reservationDetail', $segment->id, $mall->id) }}"
-                                        class="btn btn-primary">Detail</a>
-                                </td>
+                                @if ($segment->trashed())
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.segmentation', $segment->id) }}"
+                                            class="btn btn-disabled disable">Detail</a>
+                                        <a href="{{ route('admin.unblockSegmentation', $segment->id) }}"
+                                            class="btn btn-error">Unblock</a>
+                                    </td>
+                                @else
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.segmentation', $segment->id) }}"
+                                            class="btn btn-primary">Detail</a>
+                                        <a href="{{ route('admin.blockSegmentation', $segment->id) }}"
+                                            class="btn btn-error">Block</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

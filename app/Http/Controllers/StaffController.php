@@ -44,7 +44,7 @@ class StaffController extends Controller
     public function viewAnnouncement()
     {
         $sidebar = 'announcement';
-        $listAnnouncement = Announcement::where('status', '1')->get();
+        $listAnnouncement = Announcement::where('status', '>', '0')->get();
         return view('staff.announcement', compact('sidebar', 'listAnnouncement'));
     }
 

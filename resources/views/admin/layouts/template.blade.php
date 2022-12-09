@@ -5,7 +5,7 @@
 @endpush
 
 @section('main')
-    <div class="drawer drawer-mobile">
+    <div class="drawer drawer-mobile h-[90vh]">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-content flex flex-col">
@@ -28,7 +28,11 @@
                 <li>
                     <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Mall List</a>
                 </li>
-                <li>Announcement List</li>
+                <li>
+                    <a class="{{ $sidebar == 'announcement' ? 'active' : '' }}"
+                        href="{{ route('admin.announcement') }}">Announcement
+                        List</a>
+                </li>
                 <li>Report List</li>
             </ul>
         </div>

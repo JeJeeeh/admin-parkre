@@ -7,8 +7,8 @@
             <form action="{{ route('admin.searchUser') }}" method="POST">
                 @csrf
                 <input type="text" placeholder="Search" name="search"
-                    class="input input-bordered border-warning w-full max-w-xs placeholder:text-warning" />
-                <button class="btn btn-warning">Search</button>
+                    class="input input-bordered border-primary w-full max-w-xs placeholder:text-primary" />
+                <button class="btn btn-primary">Search</button>
                 </button>
             </form>
         </div>
@@ -24,7 +24,7 @@
                             <th class="text-center">Email</th>
                             <th class="text-center">Phone</th>
                             <th class="text-center">Address</th>
-                            {{-- <th class="text-center">Action</th> --}}
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,10 +35,20 @@
                                 <td class="text-center">{{ $user->email }}</td>
                                 <td class="text-center">{{ $user->phone }}</td>
                                 <td class="text-center">{{ $user->address }}</td>
-                                {{-- <td class="text-center">
-                                    <a href="{{ route('staff.reservationDetail', $user->id) }}"
-                                        class="btn btn-primary">Detail</a>
-                                </td> --}}
+                                @if ($user->trashed())
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.userDetail', $user->id) }}"
+                                            class="btn btn-disabled disable">Detail</a>
+                                        <a href="{{ route('admin.unblockUser', $user->id) }}"
+                                            class="btn btn-error">Unblock</a>
+                                    </td>
+                                @else
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.userDetail', $user->id) }}"
+                                            class="btn btn-primary">Detail</a>
+                                        <a href="{{ route('admin.blockUser', $user->id) }}" class="btn btn-error">Block</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

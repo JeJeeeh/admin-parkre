@@ -4,15 +4,10 @@
     <div class="mt-16 py-8 px-4">
         <div class="flex justify-between">
             <div>
-                <p class="text-semibold text-3xl">Add Mall</p>
+                <p class="text-semibold text-3xl">Add Announcement</p>
             </div>
             <div>
-                <a href="{{ route('admin.mall') }}">
-                    <div class="btn btn-primary">
-                        Add Segmentation
-                    </div>
-                </a>
-                <a href="{{ route('admin.mall') }}">
+                <a href="{{ route('admin.announcement') }}">
                     <div class="btn btn-error">
                         Back
                     </div>
@@ -35,23 +30,23 @@
                 @else
                 @endif
             </div>
-            <form action="{{ route('admin.doAddMall') }}" class="space-y-4" method="POST">
+            <form action="{{ route('admin.doAddAnnouncement') }}" class="space-y-4" method="POST">
                 @csrf
                 <div>
-                    <input type="text" placeholder="Mall Name" name='name' class="input w-full" />
+                    <select class="select w-full" name="mall">
+                        <option disabled selected value="-2">Select Mall</option>
+                        <option value="-1">All</option>
+                        @foreach ($listMall as $mall)
+                            <option value="{{ $mall->id }}">{{ $mall->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
-                    <input type="text" placeholder="Mall Address" name="address" class="input w-full" />
+                    <input type="text" placeholder="Announcement Header" name='header' value="{{ old('header') }}"
+                        class="input w-full" />
                 </div>
-                <div class="flex justify-between space-x-2">
-                    <div class="w-1/2">
-                        <input type="number" min="1" placeholder="Park Space" name="park_space"
-                            class="input w-full" />
-                    </div>
-                    <div class="w-1/2">
-                        <input type="number" min="1" placeholder="Reserve Space" name="reserve_space"
-                            class="input w-full" />
-                    </div>
+                <div>
+                    <textarea class="textarea w-full h-48" placeholder="Announcement Content" name="content" value='{{ old('content') }}'></textarea>
                 </div>
                 <div>
                     <button class="btn w-full text-primary">Submit</button>
