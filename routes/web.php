@@ -30,7 +30,6 @@ Route::prefix('admin')->group(function () {
         Route::put("/review_customer", [AdminController::class, 'reportReviewCustomer'])->name('admin.reportReviewCustomer');
     });
 
-
     Route::get('/detail/{id}', [AdminController::class, 'userDetail'])->name('admin.userDetail');
     Route::get('/block/{id}', [AdminController::class, 'blockUser'])->name('admin.blockUser');
     Route::get('/unblock/{id}', [AdminController::class, 'unblockUser'])->name('admin.unblockUser');

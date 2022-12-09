@@ -144,13 +144,14 @@ class AdminController extends Controller
 
     public function reportReviewCustomer()
     {
-        //
+
         $data = [];
         foreach ($this->list_month as $month) {
             $data[] = Review::whereMonth('created_at', $month)->avg('score') ?? 0;
         }
         $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return compact('labels', 'data');
+    }
 
     public function doAddMall(Request $req)
     {
