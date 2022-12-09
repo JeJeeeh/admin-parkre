@@ -21,7 +21,7 @@ class ReviewFactory extends Factory
             'user_id' => User::all()->random()->id,
             'score' => $this->faker->numberBetween(1, 5),
             'description' => $this->faker->text,
-            'created_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now', $timezone = null),
             'updated_at' => now(),
         ];
     }

@@ -1,4 +1,4 @@
-<div class="navbar h-12 fixed flex justify-end top-0 w-[calc(100vw-21rem)]">
+<div class="navbar h-12 flex justify-end top-0 w-[calc(100vw-22rem)]">
 
     <div class="flex-none">
         <div class="dropdown dropdown-end">
