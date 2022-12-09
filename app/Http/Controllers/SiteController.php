@@ -28,20 +28,18 @@ class SiteController extends Controller
 
         // find staff
         $activeUser = Staff::where('username', '=', $req->email)->first();
-        //login as admin
-        if ($activeUser->role_id == 1) {
-            if ($activeUser && Hash::check($req->password, $activeUser->password)) {
-                $req->session()->put('activeUser', $activeUser);
+        if ($activeUser && Hash::check($req->password, $activeUser->password)) {
+            $req->session()->put('activeUser', $activeUser);
+            //login as admin
+            if ($activeUser->role_id == 1) {
                 return redirect()->route('admin.home');
             }
-        }
-        //login as staff
-        if ($activeUser->role_id == 2) {
-            if ($activeUser && Hash::check($req->password, $activeUser->password)) {
-                $req->session()->put('activeUser', $activeUser);
+            //login as staff
+            else if ($activeUser->role_id == 2) {
                 return redirect()->route('staff.home');
             }
         }
+
 
         // find user
         $activeUser = User::where('email', '=', $req->email)->first();
