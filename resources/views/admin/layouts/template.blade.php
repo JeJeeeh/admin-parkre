@@ -5,7 +5,7 @@
 @endpush
 
 @section('main')
-    <div class="drawer drawer-mobile">
+    <div class="drawer drawer-mobile h-[90vh]">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-content flex flex-col">

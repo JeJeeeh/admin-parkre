@@ -49,9 +49,20 @@
                                 <td class="text-center">{{ $mall->address }}</td>
                                 <td class="text-center">{{ $mall->park_space }}</td>
                                 <td class="text-center">{{ $mall->reserve_space }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('admin.mallDetail', $mall->id) }}" class="btn btn-primary">Detail</a>
-                                </td>
+                                @if ($mall->trashed())
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.mallDetail', $mall->id) }}"
+                                            class="btn btn-disabled disable">Detail</a>
+                                        <a href="{{ route('admin.unblockMall', $mall->id) }}"
+                                            class="btn btn-error">Unblock</a>
+                                    </td>
+                                @else
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.mallDetail', $mall->id) }}"
+                                            class="btn btn-primary">Detail</a>
+                                        <a href="{{ route('admin.blockMall', $mall->id) }}" class="btn btn-error">Block</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

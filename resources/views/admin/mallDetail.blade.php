@@ -67,10 +67,21 @@
                                 <td class="text-center">{{ $segment->park_space }}</td>
                                 <td class="text-center">{{ $segment->reserve_space }}</td>
                                 <td class="text-center">Rp. {{ $segment->initial_price }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('staff.reservationDetail', $segment->id, $mall->id) }}"
-                                        class="btn btn-primary">Detail</a>
-                                </td>
+                                @if ($segment->trashed())
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.segmentation', $segment->id) }}"
+                                            class="btn btn-disabled disable">Detail</a>
+                                        <a href="{{ route('admin.unblockSegmentation', $segment->id) }}"
+                                            class="btn btn-error">Unblock</a>
+                                    </td>
+                                @else
+                                    <td class="text-center">
+                                        <a href="{{ route('admin.segmentation', $segment->id) }}"
+                                            class="btn btn-primary">Detail</a>
+                                        <a href="{{ route('admin.blockSegmentation', $segment->id) }}"
+                                            class="btn btn-error">Block</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

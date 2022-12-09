@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\Mall;
+use App\Models\Reservation;
 use App\Models\Segmentation;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -13,9 +15,32 @@ class AdminController extends Controller
     public function index()
     {
         $sidebar = 'home';
-        $listUser = User::all();
+        $listUser = User::withTrashed()->get();
         // dd($listUser);
         return view('admin.home', compact('sidebar', 'listUser'));
+    }
+
+    public function userDetail($id)
+    {
+        $sidebar = 'home';
+        $user = User::find($id);
+        $history = Reservation::where('user_id', $id)->get();
+        // dd($history);
+        return view('admin.userDetail', compact('sidebar', 'user', 'history'));
+    }
+
+    public function blockUser($id)
+    {
+        $sidebar = 'home';
+        $user = User::find($id)->delete();
+        return redirect()->back();
+    }
+
+    public function unblockUser($id)
+    {
+        $sidebar = 'home';
+        $user = User::withTrashed()->find($id)->restore();
+        return redirect()->back();
     }
 
     public function searchUser(Request $req)
@@ -29,7 +54,8 @@ class AdminController extends Controller
     public function mallList()
     {
         $sidebar = 'mall';
-        $listMall = Mall::all();
+        // $listMall = Mall::all();
+        $listMall = Mall::withTrashed()->get();
         // dd($listMall);
         return view('admin.mallList', compact('sidebar', 'listMall'));
     }
@@ -47,7 +73,7 @@ class AdminController extends Controller
         $sidebar = 'mall';
         $mall = Mall::find($id);
         // dd($mall);
-        $listSegment = Segmentation::WHERE('mall_id', $id)->get();
+        $listSegment = Segmentation::withTrashed()->WHERE('mall_id', $id)->get();
         return view('admin.mallDetail', compact('sidebar', 'mall', 'listSegment'));
     }
 
@@ -86,6 +112,24 @@ class AdminController extends Controller
         $mall->save();
 
         return redirect()->route('admin.addMall')->with('success', 'Mall has been added');
+    }
+
+    public function blockMall($id)
+    {
+        //softdeletes
+        $mall = Mall::withTrashed()->find($id);
+        $mall->delete();
+
+        return redirect()->back()->with('success', 'Mall has been blocked');
+    }
+
+    public function unblockMall($id)
+    {
+        //softdeletes
+        $mall = Mall::withTrashed()->find($id);
+        $mall->restore();
+
+        return redirect()->back()->with('success', 'Mall has been blocked');
     }
 
     public function editMall($id)
@@ -127,11 +171,39 @@ class AdminController extends Controller
         return redirect()->route('admin.mallDetail', $req->id)->with('success', 'Mall has been updated');
     }
 
+    public function segmentation($id)
+    {
+        $sidebar = 'mall';
+        $segmentation = Segmentation::WHERE('id', $id)->get();
+
+        // dd($segmentation);
+
+        return view('admin.segmentation', compact('sidebar', 'segmentation'));
+    }
+
     public function addSegmentation()
     {
         $sidebar = 'mall';
         $listMall = Mall::all();
         return view('admin.addSegmentation', compact('sidebar', 'listMall'));
+    }
+
+    public function blockSegmentation($id)
+    {
+        //softdeletes
+        $segmentation = Segmentation::withTrashed()->find($id);
+        $segmentation->delete();
+
+        return redirect()->back();
+    }
+
+    public function unblockSegmentation($id)
+    {
+        //softdeletes
+        $segmentation = segmentation::withTrashed()->find($id);
+        $segmentation->restore();
+
+        return redirect()->back();
     }
 
     public function doAddSegmentation(Request $req)
@@ -171,10 +243,148 @@ class AdminController extends Controller
         return redirect()->route('admin.addSegmentation')->with('success', 'Segmentation has been added');
     }
 
+    public function editSegmentation($id)
+    {
+        $sidebar = 'mall';
+        $segmentation = Segmentation::find($id);
+        return view('admin.editSegmentation', compact('sidebar', 'segmentation'));
+    }
+
+    public function doEditSegmentation(Request $req)
+    {
+        $rule = [
+            'name' => 'required',
+            'park_space' => 'required',
+            'reserve_space' => 'required',
+            'price' => 'required',
+            'initial_price' => 'required'
+        ];
+
+        //message
+        $message = [
+            'name.required' => 'Mall name is required',
+            'park_space.required' => 'Parking space is required',
+            'reserve_space.required' => 'Reserve space is required',
+            'price.required' => 'Price is required',
+            'initial_price.required' => 'Initial price is required'
+        ];
+
+        $req->validate($rule, $message);
+
+        $Segmetation = Segmentation::whereId($req->id)->update([
+            'name' => $req->name,
+            'park_space' => $req->park_space,
+            'reserve_space' => $req->reserve_space,
+            'price' => $req->price,
+            'initial_price' => $req->initial_price
+        ]);
+
+        return redirect()->route('admin.segmentation', $req->id)->with('success', 'Mall has been updated');
+    }
+
     public function announcement()
     {
         $sidebar = 'announcement';
-        $listAnnouncement = Announcement::all();
-        return view('admin.announcementList', compact('sidebar', 'listAnnouncement'));
+        $listAnnouncement = Announcement::withTrashed()->get();
+        return view('admin.announcement', compact('sidebar', 'listAnnouncement'));
+    }
+
+    public function addAnnouncement()
+    {
+        $sidebar = 'announcement';
+        $listMall = Mall::all();
+
+        return view('admin.addAnnouncement', compact('sidebar', 'listMall'));
+    }
+
+    public function doAddAnnouncement(Request $req)
+    {
+        // dd($req->all());
+
+        $activeUser = Session::get('activeUser');
+        $admin_id = $activeUser->id;
+
+        $rule = [
+            'header' => 'required',
+            'mall' => 'required'
+        ];
+
+        $message = [
+            'header.required' => 'Announcement Header is required',
+            'mall.required' => 'Mall is required'
+        ];
+
+        $req->validate($rule, $message);
+
+        $ann = new Announcement();
+        $ann->header = $req->header;
+        $ann->content = $req->content;
+        if ($req->mall == -1) {
+            //input all mall
+            $ann->status = 2;
+            $ann->mall_id = 1;
+        } else {
+            $ann->status = 0;
+            $ann->mall_id = $req->mall;
+        }
+        $ann->staff_id = $admin_id;
+        $ann->save();
+        return redirect()->back();
+    }
+
+    public function announcementDetail($id)
+    {
+        $sidebar = 'announcement';
+        $ann = Announcement::find($id);
+        return view('admin.announcementDetail', compact('sidebar', 'ann'));
+    }
+
+    public function deleteAnnouncement($id)
+    {
+        $ann = Announcement::find($id);
+        $ann->delete();
+
+        return redirect()->back();
+    }
+
+    public function restoreAnnouncement($id)
+    {
+        $ann = Announcement::withTrashed()->find($id);
+        $ann->restore();
+
+        return redirect()->back();
+    }
+
+    public function editAnnouncement($id)
+    {
+        $sidebar = 'announcement';
+        $ann = Announcement::find($id);
+        $listMall = Mall::all();
+        return view('admin.editAnnouncement', compact('sidebar', 'ann', 'listMall'));
+    }
+
+    public function doEditAnnouncement(Request $req)
+    {
+        // dd($req->all());
+        //error
+        $rule = [
+            'header' => 'required',
+            'mall' => 'required'
+        ];
+        //message
+        $message = [
+            'header.required' => 'Announcement Header is required',
+            'mall.required' => 'Mall is required'
+        ];
+
+        $req->validate($rule, $message);
+
+        $announcement = Announcement::whereId($req->id)->update([
+            'header' => $req->header,
+            'content' => $req->content,
+            'mall_id' => $req->mall
+        ]);
+
+        return redirect()->route('admin.announcementDetail', $req->id);
     }
 }
