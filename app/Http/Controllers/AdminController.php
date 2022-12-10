@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\Mall;
-use App\Models\Reservation;
-use App\Models\Segmentation;
 use App\Models\User;
+use App\Models\Review;
+use App\Models\Reservation;
+use App\Models\Transaction;
+use App\Models\Segmentation;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
@@ -81,6 +83,74 @@ class AdminController extends Controller
     {
         $sidebar = 'mall';
         return view('admin.addMall', compact('sidebar'));
+    }
+
+
+    public function report()
+    {
+        $sidebar = 'report';
+
+        return view('admin.report', compact('sidebar'));
+    }
+    private $list_month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    // semua yg ada di table transactions
+    public function reportTransaksiUser()
+    {
+        //
+        $data = [];
+        foreach ($this->list_month as $month) {
+            $data[] = Transaction::whereMonth('created_at', $month)->count();
+        }
+        $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return compact('labels', 'data');
+    }
+
+    // total price di table transactions
+    public function reportKeuntunganCustomer()
+    {
+        //
+        $data = [];
+        foreach ($this->list_month as $month) {
+            $data[] = Transaction::whereMonth('created_at', $month)->sum('price');
+        }
+        $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return compact('labels', 'data');
+    }
+
+    // status di reservations 1
+    public function reportReservasiCustomer()
+    {
+        //
+        $data = [];
+        foreach ($this->list_month as $month) {
+            $data[] = Reservation::where('status', 1)->whereMonth('created_at', $month)->count();
+        }
+        $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return compact('labels', 'data');
+    }
+
+    // status di reservations 1 dan 0
+    public function reportReservasiSukses()
+    {
+        //
+        $data = [];
+        foreach ($this->list_month as $month) {
+            $data[] = Reservation::whereMonth('created_at', $month)->count();
+        }
+        $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return compact('labels', 'data');
+    }
+
+
+    public function reportReviewCustomer()
+    {
+
+        $data = [];
+        foreach ($this->list_month as $month) {
+            $data[] = Review::whereMonth('created_at', $month)->avg('score') ?? 0;
+        }
+        $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return compact('labels', 'data');
     }
 
     public function doAddMall(Request $req)
