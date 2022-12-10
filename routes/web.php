@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\StaffController;
+use Illuminate\Support\Facades\Request;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
@@ -105,4 +105,37 @@ Route::prefix('home')->group(function () {
     Route::get('/search', [CustomerController::class, 'searchMall'])->name('customer.search.mall');
     Route::get('/{mall_slug}', [CustomerController::class, 'mallDetail'])->name('customer.mall.detail');
     Route::get('/{mall_slug}/reserve', [CustomerController::class, 'reserve'])->name('customer.reserve');
+});
+
+
+// testing payment route
+
+Route::prefix('/payment')->group(function () {
+    Route::get('/', function () {
+
+        $res = \App\Utilities\PaymentHelper::redirectPayment([
+            'product' => ['test'],
+            'qty' => [1],
+            'price' => [10000],
+            'returnUrl' => 'http://localhost:8000/payment/return',
+            'cancelUrl' => 'http://localhost:8000/payment/cancel',
+            'notifyUrl' => 'https://0116-180-247-68-158.ap.ngrok.io/api/payment/notify',
+            'referenceId' => '123456789',
+            'buyerName' => 'John Doe',
+            'buyerEmail' => 'john@doe.com',
+            'buyerPhone' => '08123456789',
+        ]);
+
+        return redirect($res->Data->Url);
+    });
+
+    Route::get('/return', function (Request $req) {
+        return 'redirected';
+    });
+    Route::get('/cancel', function () {
+        return 'cancel';
+    });
+    Route::post('/notify', function (Request $req) {
+        return $req->trx_id;
+    });
 });
