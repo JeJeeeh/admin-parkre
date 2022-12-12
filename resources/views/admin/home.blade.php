@@ -23,7 +23,7 @@
                             <th class="text-center">Name</th>
                             <th class="text-center">Email</th>
                             <th class="text-center">Phone</th>
-                            <th class="text-center">Address</th>
+                            {{-- <th class="text-center">Address</th> --}}
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -34,7 +34,7 @@
                                 <td class="text-center">{{ $user->name }}</td>
                                 <td class="text-center">{{ $user->email }}</td>
                                 <td class="text-center">{{ $user->phone }}</td>
-                                <td class="text-center">{{ $user->address }}</td>
+                                {{-- <td class="text-center">{{ $user->address }}</td> --}}
                                 @if ($user->trashed())
                                     <td class="text-center">
                                         <a href="{{ route('admin.userDetail', $user->id) }}"

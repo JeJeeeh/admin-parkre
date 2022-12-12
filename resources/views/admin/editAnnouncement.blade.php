@@ -7,7 +7,7 @@
                 <p class="text-semibold text-3xl">Edit Announcement</p>
             </div>
             <div>
-                <a href="{{ route('admin.mall') }}">
+                <a href="{{ route('admin.announcementDetail', $ann->id) }}">
                     <div class="btn btn-error">
                         Back
                     </div>

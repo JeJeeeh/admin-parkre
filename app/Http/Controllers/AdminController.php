@@ -155,20 +155,21 @@ class AdminController extends Controller
 
     public function doAddMall(Request $req)
     {
+        $activeUser = Session::get('activeUser');
         // dd($req->all());
         $rule = [
             'name' => 'required',
             'address' => 'required',
             'park_space' => 'required',
-            'reserve_space' => 'required'
+            'reserve_space' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
-
-        //message
         $message = [
             'name.required' => 'Mall name is required',
             'address.required' => 'Mall address is required',
             'park_space.required' => 'Parking space is required',
-            'reserve_space.required' => 'Reserve space is required'
+            'reserve_space.required' => 'Reserve space is required',
+            'image.image' => 'Please upload an image',
         ];
 
         $req->validate($rule, $message);
@@ -179,6 +180,11 @@ class AdminController extends Controller
         $mall->address = $req->address;
         $mall->park_space = $req->park_space;
         $mall->reserve_space = $req->reserve_space;
+        if ($req->image) {
+            $imageName = $activeUser->username . '.' . $req->image->extension();
+            $req->image->storeAs("MallImages", $imageName, 'public');
+            $activeUser->image_url = "mallImages/" . $imageName;
+        }
         $mall->save();
 
         return redirect()->route('admin.addMall')->with('success', 'Mall has been added');
@@ -278,25 +284,25 @@ class AdminController extends Controller
 
     public function doAddSegmentation(Request $req)
     {
+        $activeUser = Session::get('activeUser');
         // dd($req->all());
-        //rule
         $rule = [
             'name' => 'required',
             'mall' => 'required',
             'park_space' => 'required',
             'reserve_space' => 'required',
             'price' => 'required',
-            'initial_price' => 'required'
+            'initial_price' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
-
-        //message
         $message = [
             'name.required' => 'Name is required',
             'mall_id.required' => 'Mall is required',
             'park_space.required' => 'Park space is required',
             'reserve_space.required' => 'Reserve space is required',
             'price.required' => 'Price is required',
-            'initial_price.required' => 'Initial price is required'
+            'initial_price.required' => 'Initial price is required',
+            'image.image' => 'Please upload an image',
         ];
 
         $req->validate($rule, $message);
@@ -308,6 +314,11 @@ class AdminController extends Controller
         $segment->reserve_space = $req->reserve_space;
         $segment->initial_price = $req->initial_price;
         $segment->price = $req->price;
+        if ($req->image) {
+            $imageName = $activeUser->username . '.' . $req->image->extension();
+            $req->image->storeAs("SegmentationImages", $imageName, 'public');
+            $activeUser->image_url = "segmentationImages/" . $imageName;
+        }
         $segment->save();
 
         return redirect()->route('admin.addSegmentation')->with('success', 'Segmentation has been added');
