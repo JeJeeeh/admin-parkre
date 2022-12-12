@@ -15,7 +15,7 @@
             </div>
         </div>
         <div>
-            <form action="{{ route('admin.doAddMall') }}" class="space-y-4" method="POST">
+            <form action="{{ route('admin.doAddMall') }}" enctype="multipart/form-data" class="space-y-4" method="POST">
                 @csrf
                 <div class="w-full h-84 bg-primary rounded-xl p-4  space-y-2">
                     @if ($errors->any())
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="btn w-full text-primary">Submit</button>
+                                <button type="submit" class="btn w-full text-primary">Submit</button>
                             </div>
                         </div>
                     </div>

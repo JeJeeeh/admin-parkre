@@ -30,7 +30,8 @@
                 @else
                 @endif
             </div>
-            <form action="{{ route('admin.doAddSegmentation') }}" class="space-y-4" method="POST">
+            <form action="{{ route('admin.doAddSegmentation') }}" class="space-y-4" enctype="multipart/form-data"
+                method="POST">
                 @csrf
                 <div class="flex">
                     <div class="w-1/4 space-y-2">
