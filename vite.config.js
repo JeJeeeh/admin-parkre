@@ -9,6 +9,7 @@ export default defineConfig({
                 "resources/js/app.js",
                 "resources/js/staff_chart.js",
                 "resources/js/admin_chart.js",
+                "resources/js/details_chart.js",
             ],
             refresh: true,
         }),
