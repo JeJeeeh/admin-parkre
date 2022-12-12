@@ -27,16 +27,17 @@
         </div>
         <div class="mt-2 flex flex-col-2 bg-primary p-4 rounded-md">
             <div>
-                <p class="text-semibold text-xl">Name</p>
-                <p class="text-semibold text-xl">Address</p>
-                <p class="text-semibold text-xl">Park Space</p>
-                <p class="text-semibold text-xl">Reserve Space</p>
+                @if ($mall->image_url == null)
+                    <img class="rounded-full w-48" src="{{ asset('images/default.png') }}" />
+                @else
+                    <img class="rounded-full w-48" src="{{ asset('storage/' . $mall->image_url) }}" />
+                @endif
             </div>
-            <div class="ml-4">
-                <p class="text-xl"> : {{ $mall->name }}</p>
-                <p class="text-xl"> : {{ $mall->address }}</p>
-                <p class="text-xl"> : {{ $mall->park_space }}</p>
-                <p class="text-xl"> : {{ $mall->reserve_space }}</p>
+            <div class="ml-8">
+                <p class="text-semibold text-xl">Name : {{ $mall->name }}</p>
+                <p class="text-semibold text-xl">Address : {{ $mall->address }}</p>
+                <p class="text-semibold text-xl">Park Space : {{ $mall->park_space }}</p>
+                <p class="text-semibold text-xl">Reserve Space : {{ $mall->reserve_space }}</p>
             </div>
         </div>
         <div class="flex justify-between mt-4">

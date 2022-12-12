@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('initial_price');
             $table->bigInteger('price');
             $table->foreignId('mall_id')->unsigned();
+            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

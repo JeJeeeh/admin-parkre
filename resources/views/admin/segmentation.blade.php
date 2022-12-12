@@ -21,18 +21,18 @@
         </div>
         <div class="mt-2 flex flex-col-2 bg-primary p-4 rounded-md">
             <div>
-                <p class="text-semibold text-xl">Name</p>
-                <p class="text-semibold text-xl">Park Space</p>
-                <p class="text-semibold text-xl">Reserve Space</p>
-                <p class="text-semibold text-xl">Initial Price</p>
-                <p class="text-semibold text-xl">Price/Hour</p>
+                @if ($segmentation[0]->image_url == null)
+                    <img class="rounded-full w-48" src="{{ asset('images/default.png') }}" />
+                @else
+                    <img class="rounded-full w-48" src="{{ asset('storage/' . $segmentation[0]->image_url) }}" />
+                @endif
             </div>
             <div class="ml-4">
-                <p class="text-xl"> : {{ $segmentation[0]->name }}</p>
-                <p class="text-xl"> : {{ $segmentation[0]->park_space }}</p>
-                <p class="text-xl"> : {{ $segmentation[0]->reserve_space }}</p>
-                <p class="text-xl"> : Rp. {{ $segmentation[0]->initial_price }}</p>
-                <p class="text-xl"> : Rp. {{ $segmentation[0]->price }}</p>
+                <p class="text-xl">Name : {{ $segmentation[0]->name }}</p>
+                <p class="text-xl">Park Space : {{ $segmentation[0]->park_space }}</p>
+                <p class="text-xl">Reserve Space : {{ $segmentation[0]->reserve_space }}</p>
+                <p class="text-xl">Initial Price : Rp. {{ $segmentation[0]->initial_price }}</p>
+                <p class="text-xl">Price/hour : Rp. {{ $segmentation[0]->price }}</p>
             </div>
         </div>
     </div>

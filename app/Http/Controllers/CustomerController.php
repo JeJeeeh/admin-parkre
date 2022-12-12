@@ -138,6 +138,7 @@ class CustomerController extends Controller
 
     public function doEditProfile(Request $req)
     {
+        dd($req->all());
         $req->validate([
             'name' => 'required',
             'address' => 'required',
