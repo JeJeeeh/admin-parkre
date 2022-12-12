@@ -60,8 +60,10 @@ export async function createChart(
             options: option,
         };
 
-        new Chart(document.getElementById(id), config);
+        const chart = new Chart(document.getElementById(id), config);
+        return chart;
     } catch (error) {
         console.log("Error: ", error);
+        return error;
     }
 }

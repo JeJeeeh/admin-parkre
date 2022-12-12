@@ -31,6 +31,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/', [AdminController::class, 'searchUser'])->name('admin.searchUser');
     Route::prefix('/report')->group(function () {
         Route::get('/', [AdminController::class, 'report'])->name('admin.report');
+        Route::get('/{q?}', [AdminController::class, 'detailsReport'])->name('admin.report.details');
+        Route::put('/details/{type}/{month}', [AdminController::class, 'detailsReportJSON']);
+        Route::put('/updatestats/{type}/{month}', [AdminController::class, 'updateStat']);
         Route::put("/transaksi_user", [AdminController::class, 'reportTransaksiUser'])->name('admin.reportTransaksiUser');
         Route::put("/keuntungan_customer", [AdminController::class, 'reportKeuntunganCustomer'])->name('admin.reportKeuntunganCustomer');
         Route::put("/reservasi_customer", [AdminController::class, 'reportReservasiCustomer'])->name('admin.reportReservasiCustomer');
@@ -128,7 +131,7 @@ Route::prefix('/payment')->group(function () {
             'price' => [10000],
             'returnUrl' => 'http://localhost:8000/payment/return',
             'cancelUrl' => 'http://localhost:8000/payment/cancel',
-            'notifyUrl' => 'https://0116-180-247-68-158.ap.ngrok.io/api/payment/notify',
+            'notifyUrl' => 'https://d991-202-80-218-31.ap.ngrok.io/api/payment/notify',
             'referenceId' => '123456789',
             'buyerName' => 'John Doe',
             'buyerEmail' => 'john@doe.com',

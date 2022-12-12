@@ -12,6 +12,8 @@ use App\Models\Segmentation;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
+use function PHPSTORM_META\type;
+
 class AdminController extends Controller
 {
     public function index()
@@ -151,6 +153,95 @@ class AdminController extends Controller
         }
         $labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return compact('labels', 'data');
+    }
+
+    public function detailsReport($q = null)
+    {
+        $sidebar = 'report';
+        $type = $q;
+
+        return view('admin.detailreport', compact('sidebar', 'type'));
+    }
+
+    public function detailsReportJSON($type, $month)
+    {
+        $data = [];
+        $labels = range(1, 31);
+        foreach ($labels as $label) {
+            switch ($type) {
+                case "transaksi-user":
+                    $data[] = Transaction::whereDay('created_at', $label)->whereMonth('created_at', $month)->count();
+                    break;
+                case "keuntungan-customer":
+                    $data[] = Transaction::whereDay('created_at', $label)->whereMonth('created_at', $month)->sum('price');
+                    break;
+                case "reservasi-customer":
+                    $data[] = Reservation::where('status', 1)->whereDay('created_at', $label)->whereMonth('created_at', $month)->count();
+                    break;
+                case "reservasi-sukses":
+                    $data[] = Reservation::whereDay('created_at', $label)->whereMonth('created_at', $month)->count();
+                    break;
+                case "review-customer":
+                    $data[] = Review::whereDay('created_at', $label)->whereMonth('created_at', $month)->avg('score') ?? 0;
+                    break;
+            }
+        }
+        return compact('labels', 'data');
+    }
+
+    public function updateStat($type, $month)
+    {
+        switch ($type) {
+            case "transaksi-user":
+                $title = 'Successful Transaction of This Month';
+                $value = Transaction::whereMonth('created_at', $month)->count();
+
+                $total = Transaction::count();
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+            case "keuntungan-customer":
+                $title = 'Profit of This Month';
+                $value = Transaction::whereMonth('created_at', $month)->sum('price');
+
+                $total = Transaction::sum('price');
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $value = number_format($value, 0, ',', '.');
+
+                $desc = "$percentage% of this year";
+                break;
+            case "reservasi-customer":
+                $title = 'Reservation of This Month';
+                $value = Reservation::where('status', 1)->whereMonth('created_at', $month)->count();
+
+                $total = Reservation::where('status', 1)->count();
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+            case "reservasi-sukses":
+                $title = 'Successful Reservation of This Month';
+                $value = Reservation::whereMonth('created_at', $month)->count();
+
+                $total = Reservation::count();
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+            case "review-customer":
+                $title = 'Review of This Month';
+                $value = Review::whereMonth('created_at', $month)->avg('score') ?? 0;
+
+                $total = Review::avg('score');
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+        }
+
+        return compact('title', 'value', 'desc');
     }
 
     public function doAddMall(Request $req)

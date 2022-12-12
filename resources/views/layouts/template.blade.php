@@ -8,6 +8,7 @@
     <title>Parkre</title>
     @vite(['resources/css/app.css'])
     @stack('chart_script')
+    <link rel="preload" href="https://placeimg.com/80/80/people" as="image">
 </head>
 
 <body>
