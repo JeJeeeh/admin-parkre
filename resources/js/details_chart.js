@@ -1,11 +1,11 @@
 import { createChart, fetchData } from "./fetcher";
 
 const chartName = {
-    "transaksi-user": "Laporan Transaksi User",
-    "keuntungan-customer": "Laporan Keuntungan dari Customer (Rp)",
-    "reservasi-customer": "Laporan Reservasi Customer",
-    "reservasi-sukses": "Laporan Reservasi Sukses",
-    "review-customer": "Laporan Review Customer",
+    "transaksi-user": "User Transaction Report",
+    "keuntungan-customer": "Profit Report (Rp)",
+    "reservasi-customer": "Customer Reservation Report",
+    "reservasi-sukses": "Success Reservation Report",
+    "review-customer": "Review Customer Report",
 };
 
 const loadChart = () => {
@@ -16,7 +16,7 @@ const loadChart = () => {
         "detail-report",
         url,
         chartName[`${type}`] +
-            ` Bulan ${
+            ` of ${
                 document.getElementById("month-selector").options[
                     document.getElementById("month-selector").selectedIndex
                 ].text

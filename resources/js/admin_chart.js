@@ -3,28 +3,28 @@ import { createChart } from "./fetcher";
 const chart_data = [
     {
         id: "transaksi_user",
-        url: "/admin/report/transaksi_user",
-        chartName: "Laporan Transaksi User",
+        url: "/admin/report/user_transaction",
+        chartName: "User Transaction Report",
     },
     {
         id: "keuntungan_customer",
-        url: "/admin/report/keuntungan_customer",
-        chartName: "Laporan Keuntungan dari Customer (Rp)",
+        url: "/admin/report/profit",
+        chartName: "Profit Report (Rp)",
     },
     {
         id: "reservasi_customer",
-        url: "/admin/report/reservasi_customer",
-        chartName: "Laporan Reservasi Customer",
+        url: "/admin/report/reservation_customer",
+        chartName: "Customer Reservation Report",
     },
     {
         id: "reservasi_sukses",
-        url: "/admin/report/reservasi_sukses",
-        chartName: "Laporan Reservasi Sukses",
+        url: "/admin/report/reservation_success",
+        chartName: "Success Reservation Report",
     },
     {
         id: "review_customer",
         url: "/admin/report/review_customer",
-        chartName: "Rata-rata Laporan Review Customer",
+        chartName: "Average Customer Review",
     },
 ];
 
