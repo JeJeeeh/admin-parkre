@@ -18,6 +18,14 @@ Route::post('register', [SiteController::class, 'doRegister'])->name('doRegister
 
 Route::post('/logout', [SiteController::class, 'logout'])->name('logout');
 
+// forgot password routes
+Route::get('/forgot', [SiteController::class, 'forgotPassword'])->name('forgotPassword');
+Route::post('/forgot', [SiteController::class, 'doForgotPassword'])->name('doForgotPassword');
+Route::get('/verify', [SiteController::class, 'verifyToken'])->name('verifyToken');
+Route::post('/verify', [SiteController::class, 'doVerifyToken'])->name('doVerifyToken');
+Route::get('/change', [SiteController::class, 'changePassword'])->name('changePassword');
+Route::post('/change', [SiteController::class, 'doChangePassword'])->name('doChangePassword');
+
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
     Route::post('/', [AdminController::class, 'searchUser'])->name('admin.searchUser');
@@ -101,6 +109,7 @@ Route::prefix('home')->group(function () {
 
     Route::post('/reserve', [CustomerController::class, 'doReserve'])->name('customer.doReserve');
     Route::get('/payment', [CustomerController::class, 'payment'])->name('customer.payment');
+    Route::get('/reservations', [CustomerController::class, 'reservations'])->name('customer.reservations');
 
     Route::get('/search', [CustomerController::class, 'searchMall'])->name('customer.search.mall');
     Route::get('/{mall_slug}', [CustomerController::class, 'mallDetail'])->name('customer.mall.detail');
