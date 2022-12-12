@@ -44,6 +44,26 @@ class CustomerController extends Controller
         return redirect()->route('customer.home');
     }
 
+    public function payment(Request $req)
+    {
+        $activeUser = $req->session()->get('activeUser');
+        $reservation = Reservation::find($req->reservation_id);
+        $res = \App\Utilities\PaymentHelper::redirectPayment([
+            'product' => ["Reservation on " . $reservation->segmentation->mall->name . " - " . $reservation->segmentation->name],
+            'qty' => [1],
+            'price' => [$reservation->price],
+            'returnUrl' => route('customer.reservations'),
+            'cancelUrl' => route('customer.reservations'),
+            'notifyUrl' => 'https://0116-180-247-68-158.ap.ngrok.io/api/payment/notify',
+            'referenceId' => '123456789',
+            'buyerName' => $activeUser->name,
+            'buyerEmail' => $activeUser->email,
+            'buyerPhone' => $activeUser->phone,
+        ]);
+
+        return redirect($res->Data->Url);
+    }
+
     public function reserve(Request $req)
     {
         $mall = Mall::where('slug', '=', $req->mall_slug)->first();
@@ -95,12 +115,6 @@ class CustomerController extends Controller
         $reservation->save();
 
         return redirect()->route('customer.payment', ['reservation_id' => $reservation->id]);
-    }
-
-    public function payment(Request $req)
-    {
-        $activeUser = $req->session()->get('activeUser');
-        return view('customer.mall.payment', compact('activeUser'));
     }
 
     public function profile(Request $req)
@@ -225,5 +239,15 @@ class CustomerController extends Controller
             return redirect()->route('customer.addVehicle')->with('success', 'Vehicle deleted successfully');
         }
         return redirect()->route('customer.addVehicle')->with('error', 'Vehicle delete failed');
+    }
+
+    public function reservations(Request $req)
+    {
+        $activeUser = User::find($req->session()->get('activeUser')->id);
+        if ($activeUser) {
+            $reservations = Reservation::where('user_id', '=', $activeUser->id)->get();
+            return view('customer.reservations', compact('activeUser', 'reservations'));
+        }
+        return back();
     }
 }
