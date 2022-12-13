@@ -81,4 +81,57 @@ class SiteController extends Controller
         $req->session()->forget('activeUser');
         return redirect()->route('index');
     }
+
+    public function forgotPassword(Request $req)
+    {
+        return view('shared.forgot');
+    }
+
+    public function doForgotPassword(Request $req)
+    {
+        $req->validate(
+            [
+                'email' => 'required | email | exists:users,email'
+            ],
+            [
+                'email.exists' => 'Email not found'
+            ]
+        );
+        return redirect()->route('verifyToken');
+    }
+
+    public function verifyToken(Request $req)
+    {
+        return view('shared.verify_token');
+    }
+
+    public function doVerifyToken(Request $req)
+    {
+        $req->validate(
+            [
+                'token' => 'required | numeric | digits:6'
+            ],
+            [
+                'token.numeric' => 'Token must be numeric',
+                'token.digits' => 'Token must be 6 digits'
+            ]
+        );
+        return redirect()->route('verifyPassword');
+    }
+
+    public function changePassword(Request $req)
+    {
+        return view('shared.change_password');
+    }
+
+    public function doChangePassword(Request $req)
+    {
+        $req->validate(
+            [
+                'password' => 'required | confirmed',
+                'password_confirmation' => 'required'
+            ]
+        );
+        return redirect()->route('login')->with('success', 'Password changed');
+    }
 }

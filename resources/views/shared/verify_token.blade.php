@@ -4,9 +4,8 @@
 
 <div class="hero min-h-screen bg-base-200">
     <div class="hero-content flex space-x-8">
-        <div class="text-left">
-            <h1 class="text-5xl font-bold">Login now!</h1>
-            <p class="py-6">Sign in to get easy access to all parking lots and reserve a parking space.</p>
+        <div class="text-center lg:text-left">
+            <h1 class="text-5xl font-bold">Forgot Your Password?</h1>
         </div>
         <div class="flex flex-col space-y-4 max-w-sm w-full">
             @if (session('error'))
@@ -27,28 +26,19 @@
             @endif
             <div class="card flex-shrink-0 w-full shadow-2xl bg-base-100">
                 <div class="card-body">
-                    <form action="{{ route('doLogin') }}" method="POST">
+                    <form action="{{ route('doVerifyToken') }}" method="POST">
                         @csrf
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text">Email</span>
+                                <span class="label-text">Code</span>
                             </label>
-                            <input type="text" name="email" placeholder="email" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
+                            <input type="text" name="token" placeholder="code" class="input input-bordered" />
                             <label class="label">
-                                <span class="label-text">Password</span>
-                            </label>
-                            <input type="text" name="password" placeholder="password" class="input input-bordered" />
-                            <label class="label">
-                                <a href="{{ route('forgotPassword') }}" class="label-text-alt link link-hover">Forgot password?</a>
+                              <span class="label-text">We've sent you a code to your email.</span>
                             </label>
                         </div>
                         <div class="form-control mt-6">
-                            <input type="submit" value="Login" class="btn btn-primary">
-                        </div>
-                        <div class="mt-4">
-                            Don't have an account? <a href="{{ route('register') }}" class="link link-hover">Register Now!</a>
+                            <input type="submit" value="Enter Code" class="btn btn-primary">
                         </div>
                     </form>
                 </div>

@@ -23,7 +23,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'password' => Hash::make('password'),
             'address' => $this->faker->address,
-            'phone' => $this->faker->phoneNumber,
+            'phone' => $this->faker->numberBetween(100000000000, 999999999999),
             'balance' => $this->faker->numberBetween(100000, 999999),
             'fcm_token' => 'fcm_token',
             'created_at' => now(),
