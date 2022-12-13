@@ -12,6 +12,8 @@ use App\Models\Segmentation;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
+use function PHPSTORM_META\type;
+
 class AdminController extends Controller
 {
     public function index()
@@ -153,32 +155,129 @@ class AdminController extends Controller
         return compact('labels', 'data');
     }
 
+    public function detailsReport($q = null)
+    {
+        $sidebar = 'report';
+        $type = $q;
+
+        return view('admin.detailreport', compact('sidebar', 'type'));
+    }
+
+    public function detailsReportJSON($type, $month)
+    {
+        $data = [];
+        $labels = range(1, 31);
+        foreach ($labels as $label) {
+            switch ($type) {
+                case "transaksi-user":
+                    $data[] = Transaction::whereDay('created_at', $label)->whereMonth('created_at', $month)->count();
+                    break;
+                case "keuntungan-customer":
+                    $data[] = Transaction::whereDay('created_at', $label)->whereMonth('created_at', $month)->sum('price');
+                    break;
+                case "reservasi-customer":
+                    $data[] = Reservation::where('status', 1)->whereDay('created_at', $label)->whereMonth('created_at', $month)->count();
+                    break;
+                case "reservasi-sukses":
+                    $data[] = Reservation::whereDay('created_at', $label)->whereMonth('created_at', $month)->count();
+                    break;
+                case "review-customer":
+                    $data[] = Review::whereDay('created_at', $label)->whereMonth('created_at', $month)->avg('score') ?? 0;
+                    break;
+            }
+        }
+        return compact('labels', 'data');
+    }
+
+    public function updateStat($type, $month)
+    {
+        switch ($type) {
+            case "transaksi-user":
+                $title = 'Successful Transaction of This Month';
+                $value = Transaction::whereMonth('created_at', $month)->count();
+
+                $total = Transaction::count();
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+            case "keuntungan-customer":
+                $title = 'Profit of This Month';
+                $value = Transaction::whereMonth('created_at', $month)->sum('price');
+
+                $total = Transaction::sum('price');
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $value = number_format($value, 0, ',', '.');
+
+                $desc = "$percentage% of this year";
+                break;
+            case "reservasi-customer":
+                $title = 'Reservation of This Month';
+                $value = Reservation::where('status', 1)->whereMonth('created_at', $month)->count();
+
+                $total = Reservation::where('status', 1)->count();
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+            case "reservasi-sukses":
+                $title = 'Successful Reservation of This Month';
+                $value = Reservation::whereMonth('created_at', $month)->count();
+
+                $total = Reservation::count();
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+            case "review-customer":
+                $title = 'Review of This Month';
+                $value = Review::whereMonth('created_at', $month)->avg('score') ?? 0;
+
+                $total = Review::avg('score');
+                $percentage = $total > 0 ? round($value / $total * 100, 2) : 0;
+
+                $desc = "$percentage% of this year";
+                break;
+        }
+
+        return compact('title', 'value', 'desc');
+    }
+
     public function doAddMall(Request $req)
     {
+        $activeUser = Session::get('activeUser');
         // dd($req->all());
         $rule = [
             'name' => 'required',
             'address' => 'required',
             'park_space' => 'required',
-            'reserve_space' => 'required'
+            'reserve_space' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
-
-        //message
         $message = [
             'name.required' => 'Mall name is required',
             'address.required' => 'Mall address is required',
             'park_space.required' => 'Parking space is required',
-            'reserve_space.required' => 'Reserve space is required'
+            'reserve_space.required' => 'Reserve space is required',
+            'image.image' => 'Please upload an image'
         ];
 
         $req->validate($rule, $message);
 
+        $slug = str_replace(' ', '-', strtolower($req->name));
+
         $mall = new Mall();
         $mall->name = $req->name;
-        $mall->slug = str_replace(' ', '-', strtolower($req->name));
+        $mall->slug = $slug;
         $mall->address = $req->address;
         $mall->park_space = $req->park_space;
         $mall->reserve_space = $req->reserve_space;
+        if ($req->image) {
+            $imageName = $slug . '.' . $req->image->extension();
+            $req->image->storeAs("MallImages", $imageName, 'public');
+            $activeUser->image_url = "mallImages/" . $imageName;
+        }
         $mall->save();
 
         return redirect()->route('admin.addMall')->with('success', 'Mall has been added');
@@ -207,6 +306,7 @@ class AdminController extends Controller
         // dd($id);
         $sidebar = 'mall';
         $mall = Mall::find($id);
+        // dd($mall);
         return view('admin.editMall', compact('sidebar', 'mall'));
     }
 
@@ -217,7 +317,8 @@ class AdminController extends Controller
             'name' => 'required',
             'address' => 'required',
             'park_space' => 'required',
-            'reserve_space' => 'required'
+            'reserve_space' => 'required',
+            'mall_image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
 
         //message
@@ -225,20 +326,34 @@ class AdminController extends Controller
             'name.required' => 'Mall name is required',
             'address.required' => 'Mall address is required',
             'park_space.required' => 'Parking space is required',
-            'reserve_space.required' => 'Reserve space is required'
+            'reserve_space.required' => 'Reserve space is required',
+            'mall_image.image' => 'Please upload an image'
         ];
 
         $req->validate($rule, $message);
 
-        $mall = Mall::whereId($req->id)->update([
-            'name' => $req->name,
-            'slug' => str_replace(' ', '-', strtolower($req->name)),
-            'address' => $req->address,
-            'park_space' => $req->park_space,
-            'reserve_space' => $req->reserve_space
-        ]);
+        $slug = str_replace(' ', '-', strtolower($req->name));
+        $image = '';
 
-        return redirect()->route('admin.mallDetail', $req->id)->with('success', 'Mall has been updated');
+        if ($req->image) {
+            $imageName = $slug . '.' . $req->image->extension();
+            $req->image->storeAs("MallImages", $imageName, 'public');
+            $image = "mallImages/" . $imageName;
+        }
+
+        $mall = Mall::find($req->id)->first();
+        if ($mall) {
+            $mall->name = $req->name;
+            $mall->slug = $slug;
+            $mall->address = $req->address;
+            $mall->park_space = $req->park_space;
+            $mall->reserve_space = $req->reserve_space;
+            $mall->image_url = $image;
+            $mall->save();
+            return back()->with('success', 'Profile updated successfully');
+        }
+
+        return back()->with('success', 'Mall has been updated');
     }
 
     public function segmentation($id)
@@ -278,36 +393,44 @@ class AdminController extends Controller
 
     public function doAddSegmentation(Request $req)
     {
+        $activeUser = Session::get('activeUser');
         // dd($req->all());
-        //rule
         $rule = [
             'name' => 'required',
             'mall' => 'required',
             'park_space' => 'required',
             'reserve_space' => 'required',
             'price' => 'required',
-            'initial_price' => 'required'
+            'initial_price' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
-
-        //message
         $message = [
             'name.required' => 'Name is required',
             'mall_id.required' => 'Mall is required',
             'park_space.required' => 'Park space is required',
             'reserve_space.required' => 'Reserve space is required',
             'price.required' => 'Price is required',
-            'initial_price.required' => 'Initial price is required'
+            'initial_price.required' => 'Initial price is required',
+            'image.image' => 'Please upload an image',
         ];
 
         $req->validate($rule, $message);
 
+        $slug = str_replace(' ', '-', strtolower($req->name));
+
         $segment = new Segmentation();
         $segment->name = $req->name;
         $segment->mall_id = $req->mall;
+        $segment->slug = $slug;
         $segment->park_space = $req->park_space;
         $segment->reserve_space = $req->reserve_space;
         $segment->initial_price = $req->initial_price;
         $segment->price = $req->price;
+        if ($req->image) {
+            $imageName = $slug . '.' . $req->image->extension();
+            $req->image->storeAs("SegmentationImages", $imageName, 'public');
+            $segment->image_url = "segmentationImages/" . $imageName;
+        }
         $segment->save();
 
         return redirect()->route('admin.addSegmentation')->with('success', 'Segmentation has been added');
@@ -315,6 +438,7 @@ class AdminController extends Controller
 
     public function editSegmentation($id)
     {
+        // dd($id);
         $sidebar = 'mall';
         $segmentation = Segmentation::find($id);
         return view('admin.editSegmentation', compact('sidebar', 'segmentation'));
@@ -327,26 +451,38 @@ class AdminController extends Controller
             'park_space' => 'required',
             'reserve_space' => 'required',
             'price' => 'required',
-            'initial_price' => 'required'
+            'initial_price' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
 
         //message
         $message = [
-            'name.required' => 'Mall name is required',
+            'name.required' => 'Segmentation name is required',
             'park_space.required' => 'Parking space is required',
             'reserve_space.required' => 'Reserve space is required',
             'price.required' => 'Price is required',
-            'initial_price.required' => 'Initial price is required'
+            'initial_price.required' => 'Initial price is required',
+
         ];
 
         $req->validate($rule, $message);
+
+        $slug = str_replace(' ', '-', strtolower($req->name));
+
+        $image = '';
+        if ($req->image) {
+            $imageName = $slug . '.' . $req->image->extension();
+            $req->image->storeAs("SegmentationImages", $imageName, 'public');
+            $image = "segmentationImages/" . $imageName;
+        }
 
         $Segmetation = Segmentation::whereId($req->id)->update([
             'name' => $req->name,
             'park_space' => $req->park_space,
             'reserve_space' => $req->reserve_space,
             'price' => $req->price,
-            'initial_price' => $req->initial_price
+            'initial_price' => $req->initial_price,
+            'image_url' => $image
         ]);
 
         return redirect()->route('admin.segmentation', $req->id)->with('success', 'Mall has been updated');
