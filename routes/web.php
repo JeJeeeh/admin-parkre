@@ -34,10 +34,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/{q?}', [AdminController::class, 'detailsReport'])->name('admin.report.details');
         Route::put('/details/{type}/{month}', [AdminController::class, 'detailsReportJSON']);
         Route::put('/updatestats/{type}/{month}', [AdminController::class, 'updateStat']);
-        Route::put("/transaksi_user", [AdminController::class, 'reportTransaksiUser'])->name('admin.reportTransaksiUser');
-        Route::put("/keuntungan_customer", [AdminController::class, 'reportKeuntunganCustomer'])->name('admin.reportKeuntunganCustomer');
-        Route::put("/reservasi_customer", [AdminController::class, 'reportReservasiCustomer'])->name('admin.reportReservasiCustomer');
-        Route::put("/reservasi_sukses", [AdminController::class, 'reportReservasiSukses'])->name('admin.reportReservasiSukses');
+        Route::put("/user_transaction", [AdminController::class, 'reportTransaksiUser'])->name('admin.reportTransaksiUser');
+        Route::put("/profit", [AdminController::class, 'reportKeuntunganCustomer'])->name('admin.reportKeuntunganCustomer');
+        Route::put("/reservation_customer", [AdminController::class, 'reportReservasiCustomer'])->name('admin.reportReservasiCustomer');
+        Route::put("/reservation_success", [AdminController::class, 'reportReservasiSukses'])->name('admin.reportReservasiSukses');
         Route::put("/review_customer", [AdminController::class, 'reportReviewCustomer'])->name('admin.reportReviewCustomer');
     });
 
