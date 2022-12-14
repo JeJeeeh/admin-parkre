@@ -10,7 +10,6 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 // shared routes
-Route::get('/testmail', [MailController::class, 'index']);
 
 Route::get('/', [SiteController::class, 'index'])->name('index');
 Route::get('login', [SiteController::class, 'login'])->name('login');
