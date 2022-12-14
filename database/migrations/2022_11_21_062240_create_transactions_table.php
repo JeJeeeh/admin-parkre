@@ -21,6 +21,9 @@ return new class extends Migration
             $table->foreignId('reservation_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('reservation_id')->references('id')->on('reservations');
         });
     }
 
