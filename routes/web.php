@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Request;
@@ -9,6 +10,8 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 // shared routes
+Route::get('/testmail', [MailController::class, 'index']);
+
 Route::get('/', [SiteController::class, 'index'])->name('index');
 Route::get('login', [SiteController::class, 'login'])->name('login');
 Route::post('login', [SiteController::class, 'doLogin'])->name('doLogin');
