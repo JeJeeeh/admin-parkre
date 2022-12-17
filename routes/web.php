@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Request;
@@ -9,24 +10,30 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 // shared routes
-Route::get('/', [SiteController::class, 'index'])->name('index');
-Route::get('login', [SiteController::class, 'login'])->name('login');
-Route::post('login', [SiteController::class, 'doLogin'])->name('doLogin');
 
-Route::get('register', [SiteController::class, 'register'])->name('register');
-Route::post('register', [SiteController::class, 'doRegister'])->name('doRegister');
+Route::middleware('guest.custom')->group(function () {
+    Route::get('/', [SiteController::class, 'index'])->name('index');
+    Route::get('login', [SiteController::class, 'login'])->name('login');
+    Route::post('login', [SiteController::class, 'doLogin'])->name('doLogin');
 
-Route::post('/logout', [SiteController::class, 'logout'])->name('logout');
+    Route::get('register', [SiteController::class, 'register'])->name('register');
+    Route::post('register', [SiteController::class, 'doRegister'])->name('doRegister');
 
-// forgot password routes
-Route::get('/forgot', [SiteController::class, 'forgotPassword'])->name('forgotPassword');
-Route::post('/forgot', [SiteController::class, 'doForgotPassword'])->name('doForgotPassword');
-Route::get('/verify', [SiteController::class, 'verifyToken'])->name('verifyToken');
-Route::post('/verify', [SiteController::class, 'doVerifyToken'])->name('doVerifyToken');
-Route::get('/change', [SiteController::class, 'changePassword'])->name('changePassword');
-Route::post('/change', [SiteController::class, 'doChangePassword'])->name('doChangePassword');
+    // forgot password routes
+    Route::get('/forgot', [SiteController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('/forgot', [SiteController::class, 'doForgotPassword'])->name('doForgotPassword');
 
-Route::prefix('admin')->group(function () {
+    Route::get('/verify', [SiteController::class, 'verifyToken'])->name('verifyToken')->middleware('auth.forgot');
+    Route::post('/verify', [SiteController::class, 'doVerifyToken'])->name('doVerifyToken')->middleware('auth.forgot');
+
+    Route::get('/change', [SiteController::class, 'changePassword'])->name('changePassword')->middleware('auth.forgot');
+    Route::post('/change', [SiteController::class, 'doChangePassword'])->name('doChangePassword')->middleware('auth.forgot');
+});
+
+Route::post('/logout', [SiteController::class, 'logout'])->name('logout')->middleware('auth.logout');
+// Route::get('/logout', [SiteController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::prefix('admin')->middleware('auth.admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.home');
     Route::post('/', [AdminController::class, 'searchUser'])->name('admin.searchUser');
     Route::prefix('/report')->group(function () {
@@ -83,7 +90,7 @@ Route::prefix('admin')->group(function () {
 });
 
 
-Route::prefix('staff')->group(function () {
+Route::prefix('staff')->middleware('auth.staff')->group(function () {
     Route::get('/', [StaffController::class, 'index'])->name('staff.home');
     Route::get('/detail/{id}', [StaffController::class, 'detailReservation'])->name('staff.reservationDetail');
     Route::get('/announcement', [StaffController::class, 'viewAnnouncement'])->name('staff.announcement');
@@ -95,7 +102,7 @@ Route::prefix('staff')->group(function () {
     Route::put('/reportjson', [StaffController::class, 'viewReportJSON'])->name('staff.reportjson');
 });
 
-Route::prefix('home')->group(function () {
+Route::prefix('home')->middleware('auth.user')->group(function () {
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
     Route::prefix('profile')->group(function () {
         Route::get('/', [CustomerController::class, 'profile'])->name('customer.profile');
@@ -122,32 +129,32 @@ Route::prefix('home')->group(function () {
 
 // testing payment route
 
-Route::prefix('/payment')->group(function () {
-    Route::get('/', function () {
+// Route::prefix('/payment')->group(function () {
+//     Route::get('/', function () {
 
-        $res = \App\Utilities\PaymentHelper::redirectPayment([
-            'product' => ['test'],
-            'qty' => [1],
-            'price' => [10000],
-            'returnUrl' => 'http://localhost:8000/payment/return',
-            'cancelUrl' => 'http://localhost:8000/payment/cancel',
-            'notifyUrl' => 'https://d991-202-80-218-31.ap.ngrok.io/api/payment/notify',
-            'referenceId' => '123456789',
-            'buyerName' => 'John Doe',
-            'buyerEmail' => 'john@doe.com',
-            'buyerPhone' => '08123456789',
-        ]);
+//         $res = \App\Utilities\PaymentHelper::redirectPayment([
+//             'product' => ['test'],
+//             'qty' => [1],
+//             'price' => [10000],
+//             'returnUrl' => 'http://localhost:8000/payment/return',
+//             'cancelUrl' => 'http://localhost:8000/payment/cancel',
+//             'notifyUrl' => 'https://d17a-180-247-166-214.ap.ngrok.io/api/payment/notify',
+//             'referenceId' => '123456789',
+//             'buyerName' => 'John Doe',
+//             'buyerEmail' => 'john@doe.com',
+//             'buyerPhone' => '08123456789',
+//         ]);
 
-        return redirect($res->Data->Url);
-    });
+//         return redirect($res->Data->Url);
+//     });
 
-    Route::get('/return', function (Request $req) {
-        return 'redirected';
-    });
-    Route::get('/cancel', function () {
-        return 'cancel';
-    });
-    Route::post('/notify', function (Request $req) {
-        return $req->trx_id;
-    });
-});
+//     Route::get('/return', function (Request $req) {
+//         return 'redirected';
+//     });
+//     Route::get('/cancel', function () {
+//         return 'cancel';
+//     });
+//     Route::post('/notify', function (Request $req) {
+//         return $req->trx_id;
+//     });
+// });
