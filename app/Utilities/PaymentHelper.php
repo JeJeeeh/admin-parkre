@@ -108,4 +108,30 @@ class PaymentHelper
             return $e->getMessage();
         }
     }
+
+    public function checkTransaction($trx_id)
+    {
+        $body = [
+            'transactionId' => $trx_id,
+        ];
+        $url = self::BASE_API_URL . '/transaction';
+        $client = new Client();
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'va' => self::getVA(),
+            'signature' => self::generateSignature($body),
+            'timestamp' => self::getDate(),
+        ];
+        $response = $client->request('POST', $url, [
+            'headers' => $headers,
+            'json' => $body
+        ]);
+
+        try {
+            return json_decode($response->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            return $e->getMessage();
+        }
+    }
 }

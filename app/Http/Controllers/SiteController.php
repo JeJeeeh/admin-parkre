@@ -189,6 +189,7 @@ class SiteController extends Controller
 
         $user = User::where('otp', '=', $req->token)->first();
         if ($user) {
+            $req->session()->forget('verifySession');
             $req->session()->put('activeUser', $user);
             return redirect()->route('changePassword');
         }

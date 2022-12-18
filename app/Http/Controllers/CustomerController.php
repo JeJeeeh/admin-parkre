@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Announcement;
 use App\Models\Mall;
-use App\Models\Reservation;
-use App\Models\Segmentation;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Rules\ValidHour;
+use App\Models\Reservation;
+use Illuminate\Support\Str;
+use App\Models\Announcement;
+use App\Models\Segmentation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,8 +55,8 @@ class CustomerController extends Controller
             'price' => [$reservation->price],
             'returnUrl' => route('customer.reservations'),
             'cancelUrl' => route('customer.reservations'),
-            'notifyUrl' => 'https://0116-180-247-68-158.ap.ngrok.io/api/payment/notify',
-            'referenceId' => '123456789',
+            'notifyUrl' => env('PAYMENT_BASE_NOTIFY_URL') . '/api/payment/notify',
+            'referenceId' => "$reservation->id",
             'buyerName' => $activeUser->name,
             'buyerEmail' => $activeUser->email,
             'buyerPhone' => $activeUser->phone,
