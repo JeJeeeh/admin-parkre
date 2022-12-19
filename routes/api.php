@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/payment/notify', function (Request $req) {
-    return $req->all();
-});
+Route::post('/payment/notify', [PaymentController::class, 'notify'])->name('api.payment.notify');

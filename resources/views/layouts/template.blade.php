@@ -26,11 +26,11 @@
 
     @vite('resources/js/app.js')
 
-    <pre>
+    {{-- <pre>
         {{ auth('web')->user() ?? 'user gaada' }}
         {{ auth('staff')->user() ?? 'staff gaada'}}
         {{ auth('admin')->user() ?? 'admin gaada'}}
-    </pre>
+    </pre> --}}
 </body>
 
 </html>
