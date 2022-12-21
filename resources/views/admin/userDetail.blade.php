@@ -1,7 +1,7 @@
 @extends('admin.layouts.template')
 
 @section('content')
-    <div class="mt-16 py-8 px-4">
+    <div class="py-8 px-4">
         <div class="flex justify-between">
             <div>
                 <p class="text-semibold text-3xl">User Detail</p>
@@ -16,16 +16,17 @@
         </div>
         <div class="mt-2 flex flex-col-2 bg-primary p-4 rounded-md">
             <div>
-                <p class="text-semibold text-xl">Name</p>
-                <p class="text-semibold text-xl">Email</p>
-                <p class="text-semibold text-xl">Address</p>
-                <p class="text-semibold text-xl">Phone</p>
+                @if ($user->image_url == null)
+                    <img class="rounded-full w-48" src="{{ asset('images/default.png') }}" />
+                @else
+                    <img class="rounded-full w-48" src="{{ asset('storage/' . $user->image_url) }}" />
+                @endif
             </div>
-            <div class="ml-4">
-                <p class="text-xl"> : {{ $user->name }}</p>
-                <p class="text-xl"> : {{ $user->email }}</p>
-                <p class="text-xl"> : {{ $user->address }}</p>
-                <p class="text-xl"> : {{ $user->phone }}</p>
+            <div class="ml-8">
+                <p class="text-semibold text-xl">Name : {{ $user->name }}</p>
+                <p class="text-semibold text-xl">Email : {{ $user->email }}</p>
+                <p class="text-semibold text-xl">Address : {{ $user->address }}</p>
+                <p class="text-semibold text-xl">Phone : {{ $user->phone }}</p>
             </div>
         </div>
         <div class="mt-8">

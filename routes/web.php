@@ -52,6 +52,20 @@ Route::prefix('admin')->middleware('auth.admin')->group(function () {
     Route::get('/block/{id}', [AdminController::class, 'blockUser'])->name('admin.blockUser');
     Route::get('/unblock/{id}', [AdminController::class, 'unblockUser'])->name('admin.unblockUser');
 
+    Route::prefix('/staff')->group(function () {
+        Route::get('/', [AdminController::class, 'staffList'])->name('admin.staff');
+        Route::post('/', [AdminController::class, 'searchStaff'])->name('admin.searchStaff');
+        Route::get('/add', [AdminController::class, 'addStaff'])->name('admin.addStaff');
+        Route::post('/add', [AdminController::class, 'doAddStaff'])->name('admin.doAddStaff');
+        Route::get('/addJob', [AdminController::class, 'addJob'])->name('admin.addJob');
+        Route::post('/addJob', [AdminController::class, 'doAddJob'])->name('admin.doAddJob');
+
+
+        Route::get('/block/{id}', [AdminController::class, 'blockStaff'])->name('admin.blockStaff');
+        Route::get('/unblock/{id}', [AdminController::class, 'unblockStaff'])->name('admin.unblockStaff');
+        Route::get('/{id}', [AdminController::class, 'staffDetail'])->name('admin.staffDetail');
+    });
+
     Route::prefix('/mall')->group(function () {
         Route::get('/', [AdminController::class, 'mallList'])->name('admin.mall');
         Route::post('/', [AdminController::class, 'searchMall'])->name('admin.searchMall');

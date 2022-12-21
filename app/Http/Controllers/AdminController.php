@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\Job;
 use App\Models\Mall;
 use App\Models\User;
 use App\Models\Review;
 use App\Models\Reservation;
 use App\Models\Transaction;
 use App\Models\Segmentation;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 use function PHPSTORM_META\type;
 
@@ -592,5 +595,127 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.announcementDetail', $req->id);
+    }
+
+    public function staffList()
+    {
+        $sidebar = 'staff';
+        $listStaff = Staff::withTrashed()->where('role_id', '2')->get();
+        return view('admin.staff', compact('sidebar', 'listStaff'));
+    }
+
+    public function searchStaff(Request $req)
+    {
+        $sidebar = 'staff';
+        $listStaff = Staff::withTrashed()->where('name', 'like', '%' . $req->search . '%')->where('role_id', '2')->get();
+        return view('admin.staff', compact('sidebar', 'listStaff'));
+    }
+
+    public function staffDetail($id)
+    {
+        $sidebar = 'staff';
+        $staff = Staff::find($id);
+
+        $listJob = Job::where('staff_id', $id)->get();
+
+        return view('admin.detailStaff', compact('sidebar', 'staff', 'listJob'));
+    }
+
+    public function blockStaff($id)
+    {
+        Staff::whereId($id)->delete();
+        return redirect()->back();
+    }
+
+    public function unblockStaff($id)
+    {
+        Staff::withTrashed()->whereId($id)->restore();
+        return redirect()->back();
+    }
+
+    public function addStaff()
+    {
+        $sidebar = 'staff';
+        return view('admin.addStaff', compact('sidebar'));
+    }
+
+    public function doAddStaff(Request $req)
+    {
+        // dd($req->all());
+        $rule = [
+            'name' => 'required',
+            'username' => 'required|unique:staffs',
+            'password' => 'required|min:8',
+            'confirmPassword' => 'required|same:password',
+            'phone' => 'required|numeric',
+        ];
+
+        $message = [
+            'name.required' => 'Name is required',
+            'username.required' => 'Username is required',
+            'username.unique' => 'Username is already taken',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 8 characters',
+            'confirmPassword.required' => 'Confirm Password is required',
+            'confirmPassword.same' => 'Confirm Password must be same with Password',
+            'phone.required' => 'Phone is required',
+            'phone.numeric' => 'Phone must be numeric',
+        ];
+
+        $req->validate($rule, $message);
+
+        $staff = new Staff();
+        $staff->name = $req->name;
+        $staff->username = $req->username;
+        $staff->password = Hash::make($req->password);
+        $staff->phone = $req->phone;
+        $staff->address = $req->address;
+        $staff->role_id = 2;
+        $staff->save();
+
+        return redirect()->route('admin.staff');
+    }
+
+    public function addJob()
+    {
+        $sidebar = 'staff';
+        $listStaff = Staff::all();
+        $listMall = Mall::all();
+        return view('admin.addJob', compact('sidebar', 'listStaff', 'listMall'));
+    }
+
+    public function doAddJob(Request $req)
+    {
+        // dd($req->all());
+        $rule = [
+            'staff' => 'required',
+            'mall' => 'required',
+            'title' => 'required',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
+        ];
+
+        $message = [
+            'staff.required' => 'Staff is required',
+            'mall.required' => 'Mall is required',
+            'title.required' => 'Title is required',
+            'start.required' => 'Start Date is required',
+            'start.date' => 'Start Date must be date',
+            'end.required' => 'End Date is required',
+            'end.date' => 'End Date must be date',
+            'end.after' => 'End Date must be after Start Date',
+        ];
+
+        $req->validate($rule, $message);
+
+        $newJob = new Job();
+        $newJob->staff_id = $req->staff;
+        $newJob->mall_id = $req->mall;
+        $newJob->title = $req->title;
+        $newJob->start_date = $req->start;
+        $newJob->end_date = $req->end;
+        $newJob->save();
+
+        return redirect()->route('admin.staff');
     }
 }

@@ -1,7 +1,6 @@
 @extends('layouts.template')
 
 @section('main')
-
     <div class="drawer drawer-mobile h-[92.5vh]">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
 
@@ -24,6 +23,9 @@
                 </li>
                 <li>
                     <a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('admin.home') }}">Master Customer</a>
+                </li>
+                <li>
+                    <a class="{{ $sidebar == 'staff' ? 'active' : '' }}" href="{{ route('admin.staff') }}">Master Staff</a>
                 </li>
                 <li>
                     <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Master Mall</a>
