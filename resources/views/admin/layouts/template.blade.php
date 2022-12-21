@@ -25,7 +25,7 @@
                     <a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('admin.home') }}">Master Customer</a>
                 </li>
                 <li>
-                    <a class="{{ $sidebar == 'staff' ? 'active' : '' }}" href="{{ route('admin.staff') }}">Staff List</a>
+                    <a class="{{ $sidebar == 'staff' ? 'active' : '' }}" href="{{ route('admin.staff') }}">Master Staff</a>
                 </li>
                 <li>
                     <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Master Mall</a>
