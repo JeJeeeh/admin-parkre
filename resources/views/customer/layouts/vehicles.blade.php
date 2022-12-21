@@ -5,7 +5,7 @@
             <div class="btn btn-primary">Add Vehicle</div>
         </a>
     </div>
-    @if ($activeUser->vehicles)
+    @if ($activeUser->vehicles->count() > 0)
         <div class="overflow-x-auto">
             <table class="table w-full border-2 border-base-200 border-none">
                 <!-- head -->

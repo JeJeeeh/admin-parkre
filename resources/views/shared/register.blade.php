@@ -52,7 +52,7 @@
                         <label class="label">
                             <span class="label-text">Password</span>
                         </label>
-                        <input type="text" name="password" placeholder="password" class="input input-bordered" />
+                        <input type="password" name="password" placeholder="password" class="input input-bordered" />
                         @error('password')
                             <span class="text-red-500">{{ $message }}</span>
                         @enderror
@@ -61,7 +61,7 @@
                         <label class="label">
                             <span class="label-text">Confirm Password</span>
                         </label>
-                        <input type="text" name="password_confirmation" placeholder="password" class="input input-bordered" />
+                        <input type="password" name="password_confirmation" placeholder="password" class="input input-bordered" />
                         @error('password_confirmation')
                             <span class="text-red-500">{{ $message }}</span>
                         @enderror

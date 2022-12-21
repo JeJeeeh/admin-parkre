@@ -25,6 +25,12 @@
     </footer>
 
     @vite('resources/js/app.js')
+
+    {{-- <pre>
+        {{ auth('web')->user() ?? 'user gaada' }}
+        {{ auth('staff')->user() ?? 'staff gaada'}}
+        {{ auth('admin')->user() ?? 'admin gaada'}}
+    </pre> --}}
 </body>
 
 </html>

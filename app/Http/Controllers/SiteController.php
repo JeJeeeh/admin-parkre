@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
 use App\Models\User;
+use App\Models\Staff;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\ForgotPasswordMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 
 class SiteController extends Controller
 {
@@ -26,31 +31,56 @@ class SiteController extends Controller
             'password' => 'required'
         ]);
 
-        // find user
-        $activeUser = User::where('email', '=', $req->email)->first();
-        if ($activeUser && Hash::check($req->password, $activeUser->password)) {
-            // login as user
-            $req->session()->put('activeUser', $activeUser);
+        // // find user
+        // $activeUser = User::where('email', '=', $req->email)->first();
+        // if ($activeUser) {
+        //     // login as user
+        //     if (Hash::check($req->password, $activeUser->password)) {
+        //         $req->session()->put('activeUser', $activeUser);
+        //         return redirect()->route('customer.home');
+        //     } else {
+        //         return back()->with('error', 'User not found');
+        //     }
+        // }
+
+        // // find staff
+        // $activeUser = Staff::where('username', '=', $req->email)->first();
+        // if ($activeUser) {
+        //     if (Hash::check($req->password, $activeUser->password)) {
+        //         // login as admin
+        //         if ($activeUser->role_id == 1) {
+        //             $req->session()->put('activeUser', $activeUser);
+        //             return redirect()->route('admin.home');
+        //         }
+        //         // login as staff
+        //         else if ($activeUser->role_id == 2) {
+        //             $req->session()->put('activeUser', $activeUser);
+        //             return redirect()->route('staff.home');
+        //         }
+        //     }
+        // }
+
+        if (Auth::guard('web')->attempt(['email' => $req->email, 'password' => $req->password])) {
+
+            $req->session()->put('activeUser', Auth::user());
+
             return redirect()->route('customer.home');
         }
 
-        // find staff
-        $activeUser = Staff::where('username', '=', $req->email)->first();
-        //login as admin
-        if ($activeUser->role_id == 1) {
-            if ($activeUser && Hash::check($req->password, $activeUser->password)) {
-                $req->session()->put('activeUser', $activeUser);
-                return redirect()->route('admin.home');
-            }
-        }
-        //login as staff
-        if ($activeUser->role_id == 2) {
-            if ($activeUser && Hash::check($req->password, $activeUser->password)) {
-                $req->session()->put('activeUser', $activeUser);
+        if (Auth::guard('admin')->attempt(['username' => $req->email, 'password' => $req->password, 'role_id' => 1])) {
 
-                return redirect()->route('staff.home');
-            }
+            $req->session()->put('activeUser', Auth::guard('admin')->user());
+
+            return redirect()->route('admin.report');
         }
+
+        if (Auth::guard('staff')->attempt(['username' => $req->email, 'password' => $req->password, 'role_id' => 2])) {
+
+            $req->session()->put('activeUser', Auth::guard('staff')->user());
+
+            return redirect()->route('staff.home');
+        }
+
         return back()->with('error', 'User not found');
     }
 
@@ -75,13 +105,35 @@ class SiteController extends Controller
         $user->name = $req->name;
         $user->phone = $req->phone;
         $user->address = $req->address;
+        $user->save();
         return redirect()->route('login')->with('success', 'Register success');
     }
 
     public function logout(Request $req)
     {
-        $req->session()->forget('activeUser');
-        return redirect()->route('index');
+        if (Auth::guard('web')->check()) {
+
+            Auth::guard('web')->logout();
+            $req->session()->forget('activeUser');
+
+            return redirect()->route('index');
+        }
+
+        if (Auth::guard('admin')->check()) {
+
+            Auth::guard('admin')->logout();
+            $req->session()->forget('activeUser');
+
+            return redirect()->route('index');
+        }
+
+        if (Auth::guard('staff')->check()) {
+
+            Auth::guard('staff')->logout();
+            $req->session()->forget('activeUser');
+
+            return redirect()->route('index');
+        }
     }
 
     public function forgotPassword(Request $req)
@@ -99,6 +151,22 @@ class SiteController extends Controller
                 'email.exists' => 'Email not found'
             ]
         );
+
+        $user = User::where('email', '=', $req->email)->first();
+
+        while (true) {
+            $otp = rand(100000, 999999);
+            try {
+                $user->otp = $otp;
+                $user->save();
+                Mail::to($user->email)->send(new ForgotPasswordMail($otp));
+                $req->session()->put('verifySession', Crypt::encryptString($req->email));
+                break;
+            } catch (\Throwable $th) {
+                //
+            }
+        }
+
         return redirect()->route('verifyToken');
     }
 
@@ -118,7 +186,15 @@ class SiteController extends Controller
                 'token.digits' => 'Token must be 6 digits'
             ]
         );
-        return redirect()->route('verifyPassword');
+
+        $user = User::where('otp', '=', $req->token)->first();
+        if ($user) {
+            $req->session()->forget('verifySession');
+            $req->session()->put('activeUser', $user);
+            return redirect()->route('changePassword');
+        }
+
+        return redirect()->route('changePassword')->with('error', 'Token invalid');
     }
 
     public function changePassword(Request $req)
@@ -134,6 +210,13 @@ class SiteController extends Controller
                 'password_confirmation' => 'required'
             ]
         );
+
+        $user = $req->session()->get('activeUser');
+        $user->password = Hash::make($req->password);
+        $user->otp = null;
+        $user->save();
+        $req->session()->forget('activeUser');
+
         return redirect()->route('login')->with('success', 'Password changed');
     }
 }

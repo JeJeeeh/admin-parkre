@@ -14,7 +14,7 @@
         {{-- transactions --}}
         <div class="rounded-md p-8 shadow-xl bg-base-100 w-full flex flex-col space-y-3 border-2 border-base-200">
             <div class="text-2xl font-bold">Your Transactions</div>
-            @if ($activeUser->transactions)
+            @if ($activeUser->transactions->count() > 0)
                 <div class="overflow-x-auto">
                         <table class="table w-full border-2 border-base-200 border-none">
                         <!-- head -->

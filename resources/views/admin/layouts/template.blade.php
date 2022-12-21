@@ -19,21 +19,21 @@
                 </li>
                 <!-- Sidebar content here -->
                 <li>
-                    <a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('admin.home') }}">User List</a>
+                    <a class="{{ $sidebar == 'report' ? 'active' : '' }}" href="{{ route('admin.report') }}">Home</a>
+                </li>
+                <li>
+                    <a class="{{ $sidebar == 'home' ? 'active' : '' }}" href="{{ route('admin.home') }}">Master Customer</a>
                 </li>
                 <li>
                     <a class="{{ $sidebar == 'staff' ? 'active' : '' }}" href="{{ route('admin.staff') }}">Staff List</a>
                 </li>
                 <li>
-                    <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Mall List</a>
-                </li>
-                <li>
-                    <a class="{{ $sidebar == 'report' ? 'active' : '' }}" href="{{ route('admin.report') }}">Report List</a>
+                    <a class="{{ $sidebar == 'mall' ? 'active' : '' }}" href="{{ route('admin.mall') }}">Master Mall</a>
                 </li>
                 <li>
                     <a class="{{ $sidebar == 'announcement' ? 'active' : '' }}"
-                        href="{{ route('admin.announcement') }}">Announcement
-                        List</a>
+                        href="{{ route('admin.announcement') }}">Master Announcement
+                    </a>
                 </li>
             </ul>
         </div>
