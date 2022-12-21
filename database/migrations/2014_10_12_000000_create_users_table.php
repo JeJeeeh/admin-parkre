@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('address')->nullable();
             $table->string('phone');
-            $table->bigInteger('balance')->default(0);
             $table->string('fcm_token')->nullable();
             $table->string('image_url')->nullable();
             $table->integer('otp')->nullable()->unsigned()->max(999999)->unique();

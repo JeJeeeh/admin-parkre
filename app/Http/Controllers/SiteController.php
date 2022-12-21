@@ -71,7 +71,7 @@ class SiteController extends Controller
 
             $req->session()->put('activeUser', Auth::guard('admin')->user());
 
-            return redirect()->route('admin.home');
+            return redirect()->route('admin.report');
         }
 
         if (Auth::guard('staff')->attempt(['username' => $req->email, 'password' => $req->password, 'role_id' => 2])) {
