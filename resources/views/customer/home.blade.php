@@ -35,7 +35,12 @@
         @foreach ($malls as $mall)
             <div class="card bg-base-100 shadow-xl">
                 <figure class="px-10 pt-10">
-                    <img src="https://placeimg.com/400/225/arch" alt="Shoes" class="rounded-xl" />
+                    {{-- <img src="{{$mall->image_url}}" alt="Shoes" class="rounded-xl" /> --}}
+                    @if ($mall->image_url == null)
+                    <img src="{{ asset('images/default.png') }}" />
+                @else
+                    <img class="rounded-xl" src="{{ asset('storage/' . $mall->image_url) }}" />
+                @endif
                 </figure>
                 <div class="card-body items-center text-center">
                     <h2 class="card-title">{{ $mall->name }}</h2>
