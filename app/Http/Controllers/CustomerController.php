@@ -68,7 +68,7 @@ class CustomerController extends Controller
     public function reserve(Request $req)
     {
         $mall = Mall::where('slug', '=', $req->mall_slug)->first();
-        $activeUser = $req->session()->get('activeUser');
+        $activeUser = User::find($req->session()->get('activeUser')->id);
         if ($mall) {
             $segmentation = Segmentation::where([
                 ['slug', '=', $req->segmentation],

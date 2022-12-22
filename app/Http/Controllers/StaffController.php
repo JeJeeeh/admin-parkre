@@ -20,15 +20,14 @@ class StaffController extends Controller
         // dump($activeUser->id);
         $date = Carbon::now();
         $sidebar = 'home';
-        $listReservasi = DB::select('SELECT r.id, r.start_time, r.end_time, s.name
-            FROM reservations r, jobs j, staffs st, malls m, segmentations s
-            WHERE j.staff_id = st.id
-            AND r.segmentation_id = s.id
-            AND s.mall_id = m.id
-            AND j.staff_id = ' . $activeUser->id . '
-            AND r.status != 0
-        AND r.created_at = CURDATE()');
+        $mallId = Job::where('staff_id', $activeUser->id)->first()->mall_id;
+        $segmentations = Segmentation::select('id')->where('mall_id', $mallId)->get();
+        $listReservasi = Reservation::where([
+            ['status', '>', '0']
+        ])->whereIn('segmentation_id', $segmentations)->get();
 
+        // dd($mallId);
+        // dd($segmentations);
         // dd($listReservasi);
 
         return view('staff.home', compact('activeUser', 'sidebar', 'listReservasi'));
