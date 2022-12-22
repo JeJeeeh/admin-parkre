@@ -36,7 +36,7 @@
                                             class="btn btn-disabled">Approved
                                         </a>
                                     @elseif ($announcement->status == '0')
-                                        <a href="{{ route('staff.announcementDetail', $announcement->id) }}"
+                                        <a href="{{ route('admin.approveAnnouncement', $announcement->id) }}"
                                             class="btn btn-error">Approve
                                         </a>
                                     @endif

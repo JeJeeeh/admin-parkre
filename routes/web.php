@@ -98,6 +98,7 @@ Route::prefix('admin')->middleware('auth.admin')->group(function () {
         Route::get('/delete/{id}', [AdminController::class, 'deleteAnnouncement'])->name('admin.deleteAnnouncement');
         Route::get('/restore/{id}', [AdminController::class, 'restoreAnnouncement'])->name('admin.restoreAnnouncement');
         Route::get('/edit/{id}', [AdminController::class, 'editAnnouncement'])->name('admin.editAnnouncement');
+        Route::get('/approve/{id}', [AdminController::class, 'approveAnnouncement'])->name('admin.approveAnnouncement');
         Route::post('/doEdit}', [AdminController::class, 'doEditAnnouncement'])->name('admin.doEditAnnouncement');
         Route::get('/{id}', [AdminController::class, 'announcementDetail'])->name('admin.announcementDetail');
     });
