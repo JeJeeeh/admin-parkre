@@ -189,7 +189,6 @@ class SiteController extends Controller
 
         $user = User::where('otp', '=', $req->token)->first();
         if ($user) {
-            $req->session()->forget('verifySession');
             $req->session()->put('activeUser', $user);
             return redirect()->route('changePassword');
         }
@@ -215,6 +214,7 @@ class SiteController extends Controller
         $user->password = Hash::make($req->password);
         $user->otp = null;
         $user->save();
+        $req->session()->forget('verifySession');
         $req->session()->forget('activeUser');
 
         return redirect()->route('login')->with('success', 'Password changed');
