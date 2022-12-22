@@ -13,7 +13,7 @@
         <div class="hero-content text-center text-neutral-content">
           <div class="max-w-md">
             <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
-            <p class="mb-5">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+            <p class="mb-5">Get to know available parking spaces now by using our service. Start using our service by first signing in.</p>
             <a href="{{ route('login') }}">
                 <button class="btn btn-primary">Get Started</button>
             </a>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="flex space-x-12 m-12">
+    {{-- <div class="flex space-x-12 m-12">
         <div class="w-1/2 flex flex-col space-y-2">
             <div class="font-title font-semibold text-5xl">Powering Tomorrow's</div>
             <div class="font-title font-semibold text-5xl text-primary">Smart Transportation</div>
@@ -56,7 +56,7 @@
         <div class="w-1/2">
             TODO Image
         </div>
-    </div>
+    </div> --}}
 </div>
 
 @endsection

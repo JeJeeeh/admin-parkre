@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('segmentations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->integer('park_space');
             $table->integer('reserve_space');
             $table->bigInteger('initial_price');
             $table->bigInteger('price');
             $table->foreignId('mall_id')->unsigned();
+            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

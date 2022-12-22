@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->integer('park_space');
             $table->integer('reserve_space');
+            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

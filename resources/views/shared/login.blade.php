@@ -4,9 +4,9 @@
 
 <div class="hero min-h-screen bg-base-200">
     <div class="hero-content flex space-x-8">
-        <div class="text-center lg:text-left">
+        <div class="text-left">
             <h1 class="text-5xl font-bold">Login now!</h1>
-            <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+            <p class="py-6">Sign in to get easy access to all parking lots and reserve a parking space.</p>
         </div>
         <div class="flex flex-col space-y-4 max-w-sm w-full">
             @if (session('error'))
@@ -39,9 +39,9 @@
                             <label class="label">
                                 <span class="label-text">Password</span>
                             </label>
-                            <input type="text" name="password" placeholder="password" class="input input-bordered" />
+                            <input type="password" name="password" placeholder="password" class="input input-bordered" />
                             <label class="label">
-                                <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+                                <a href="{{ route('forgotPassword') }}" class="label-text-alt link link-hover">Forgot password?</a>
                             </label>
                         </div>
                         <div class="form-control mt-6">

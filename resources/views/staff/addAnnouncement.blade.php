@@ -2,7 +2,18 @@
 
 @section('content')
     <div class="mt-16 py-8 px-4">
-        <p class="text-semibold text-3xl mb-2">Add Announcement</p>
+        <div class="flex justify-between">
+            <div>
+                <p class="text-semibold text-3xl">Add Announcement</p>
+            </div>
+            <div>
+                <a href="{{ route('staff.announcement') }}">
+                    <div class="btn btn-error">
+                        Back
+                    </div>
+                </a>
+            </div>
+        </div>
         <div class="space-y-2">
             @if ($errors->any())
                 @foreach ($errors->all() as $error)
@@ -23,26 +34,23 @@
                 <form action="{{ route('staff.doAddAnnouncement') }}" method="POST" class="space-y-2 form-control">
                     @csrf
                     <div>
-                        <input type="text" placeholder="Announcement Header" name="header" class="input w-full"
-                            value="{{ old('header') }}" />
+                        <select class="select w-full" name="mall">
+                            <option disabled selected value="-2">Select Mall</option>
+                            <option value="-1">All</option>
+                            @foreach ($listMall as $mall)
+                                <option value="{{ $mall->id }}">{{ $mall->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Announcement Header" name='header' value="{{ old('header') }}"
+                            class="input w-full" />
                     </div>
                     <div>
                         <textarea class="textarea w-full h-48" placeholder="Announcement Content" name="content" value='{{ old('content') }}'></textarea>
                     </div>
                     <div>
-                        {{-- <label class="label">
-                            <span class="label-text">Select Mall Segmentation</span>
-                        </label> --}}
-                        <select class="select w-full" name="segment">
-                            <option disabled selected value="-1">Select Mall Segmentation</option>
-                            <option value="-1">All</option>
-                            @foreach ($listSegment as $segment)
-                                <option value="{{ $segment->id }}">{{ $segment->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <button class="btn w-full">Submit</button>
+                        <button class="btn w-full text-primary">Submit</button>
                     </div>
                 </form>
             </div>

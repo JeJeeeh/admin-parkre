@@ -39,4 +39,9 @@ class Reservation extends Model
     {
         return $this->hasOne(Transaction::class);
     }
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
 }

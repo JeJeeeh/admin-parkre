@@ -16,11 +16,13 @@
             </div>
             <div class="rounded-md">
                 <figure>
+
                     @if ($mall->image_url == null)
                     <img src="{{ asset('images/default.png') }}" />
                 @else
                     <img class="rounded-xl" src="{{ asset('storage/' . $mall->image_url) }}" />
                 @endif
+
                 </figure>
             </div>
         </div>

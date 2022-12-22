@@ -24,7 +24,6 @@ class User extends Authenticatable
         'password',
         'address',
         'phone',
-        'vehicle_plate',
         'created_at',
     ];
 
@@ -33,8 +32,18 @@ class User extends Authenticatable
         return $this->hasMany(Reservation::class);
     }
 
-    public function transaction()
+    public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
+    public function vehicles()
+    {
+        return $this->hasMany(Vehicle::class);
     }
 }
