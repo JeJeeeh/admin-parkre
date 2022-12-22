@@ -718,4 +718,13 @@ class AdminController extends Controller
 
         return redirect()->route('admin.staff');
     }
+
+    public function approveAnnouncement($id)
+    {
+        $ann = Announcement::find($id);
+        $ann->status = 1;
+        $ann->save();
+
+        return redirect()->back();
+    }
 }
