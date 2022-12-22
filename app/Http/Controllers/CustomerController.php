@@ -25,9 +25,10 @@ class CustomerController extends Controller
 
     public function searchMall(Request $req)
     {
+        $activeUser = $req->session()->get('activeUser');
         $newAnnouncement = Announcement::where('status', '=', '2')->orderBy('created_at')->first();
         $malls = Mall::where('name', 'like', '%' . $req->keyword . '%')->get();
-        return view('customer.home', compact('malls', 'newAnnouncement'));
+        return view('customer.home', compact('malls', 'newAnnouncement', 'activeUser'));
     }
 
     public function mallDetail(Request $req)

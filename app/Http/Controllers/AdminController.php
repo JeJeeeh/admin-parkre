@@ -533,7 +533,7 @@ class AdminController extends Controller
             $ann->status = 2;
             $ann->mall_id = 1;
         } else {
-            $ann->status = 0;
+            $ann->status = 1;
             $ann->mall_id = $req->mall;
         }
         $ann->staff_id = $admin_id;

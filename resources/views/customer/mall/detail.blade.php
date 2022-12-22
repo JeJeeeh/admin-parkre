@@ -8,12 +8,6 @@
 
 <div class="flex flex-col space-y-12 mt-24 mx-12">
     <div class="flex space-x-8">
-
-        <div class="rounded-md">
-            <figure>
-                <img class="rounded-md" src="https://placeimg.com/500/500/arch" alt="Mall Image"/>
-            </figure>
-
         <div class="flex flex-col space-y-6 w-1/3">
             <div class="flex flex-col space-y-4">
                 <h1 class="text-3xl font-bold">{{ $mall->name }}</h1>
@@ -28,7 +22,6 @@
                 @endif
                 </figure>
             </div>
-
         </div>
         <div class="flex flex-col space-y-2 w-2/3">
             {{-- announcements --}}
@@ -43,18 +36,6 @@
                     </div>
                 </div>
             @endif
-            <div class="flex flex-col justify-between h-full">
-                <div class="flex flex-col space-y-4">
-                    <h1 class="text-3xl font-bold">{{ $mall->name }}</h1>
-                    <p class="text-lg">Address : {{ $mall->address }}</p>
-                    <p class="text-lg">Available Parking Space : {{ $mall->park_space }}</p>
-                    <p class="text-lg">Available Reserve Space : {{ $mall->reserve_space }}</p>
-                </div>
-                <div>
-                    <a href="">
-                        <button class="btn btn-primary w-full">Reserve a Park</button>
-                    </a>
-                </div>
             <h1 class="text-xl font-bold">Available Mall Segmentations</h1>
             <div class="flex space-x-6 overflow-x-auto">
                 @foreach ($mall->segmentations as $segmentation)
@@ -76,28 +57,9 @@
                                 <button class="btn btn-primary w-full" type="submit">Reserve a Park</button>
                             </form>
                         </div>
-
                     </div>
                 @endforeach
 
-            </div>
-        </div>
-    </div>
-
-    <div class="flex flex-col space-y-8">
-        <h1 class="text-3xl font-bold">Available Mall Segmentations</h1>
-        <div class="grid grid-cols-4 gap-4">
-            @foreach ($mall->segmentations as $segmentation)
-                <div class="card bg-base-100 shadow-xl">
-                    <figure class="px-10 pt-10">
-                        <img src="https://placeimg.com/400/225/arch" alt="Segmentation Image" class="rounded-xl" />
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h2 class="card-title">{{ $segmentation->name }}</h2>
-                        <p>Available Parking Space : {{ $segmentation->park_space }}</p>
-                        <p>Available Reserve Space : {{ $segmentation->reserve_space }}</p>
-                    </div>
-                @endforeach
             </div>
         </div>
     </div>

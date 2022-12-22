@@ -36,8 +36,8 @@
             <div class="card bg-base-100 shadow-xl">
                 <figure class="px-10 pt-10">
                     {{-- <img src="{{$mall->image_url}}" alt="Shoes" class="rounded-xl" /> --}}
-                    @if ($mall->image_url == null)
-                    <img src="{{ asset('images/default.png') }}" />
+                @if ($mall->image_url == null)
+                    <img class="rounded-md" src="https://placeimg.com/500/500/arch" alt="Mall Image"/>
                 @else
                     <img class="rounded-xl" src="{{ asset('storage/' . $mall->image_url) }}" />
                 @endif
