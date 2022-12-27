@@ -46,5 +46,49 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+        $this->renderable(function (Throwable $e) {
+
+            if (request()->wantsJson()) {
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\BadRequestHttpException) {
+                    return response()->json([
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
+                    ], 400);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
+                    return response()->json([
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
+                    ], 401);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException) {
+                    return response()->json([
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
+                    ], 403);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                    return response()->json([
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
+                    ], 404);
+                }
+
+                if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+                    return response()->json([
+                        'status' => $e->getStatusCode(),
+                        'message' => $e->getMessage(),
+                    ], 405);
+                }
+
+                return response()->json([
+                    'status' => 500,
+                    'message' => $e->getMessage()
+                ], 500);
+            }
+        });
     }
 }
