@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\API\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ApiController;
+use App\Http\Controllers\API\PaymentController;
+use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\JobController;
+use App\Http\Controllers\API\MallController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,30 +19,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', [UserController::class, 'login']);
-Route::post('register', [UserController::class, 'register']);
+Route::post('/login', [ApiController::class, 'login']);
+Route::post('/register', [ApiController::class, 'register']);
+Route::post('/logout', [ApiController::class, 'logout'])->middleware(['auth:api-user', 'auth:api-staff', 'auth:api-admin']);
 
-Route::post('/test', [PaymentGatewayController::class, 'index']);
-
-Route::group(['middleware' => 'auth:api.user', 'auth:api.staff'], function () {
-    Route::post('logout', [UserController::class, 'logout']);
-
-    Route::prefix('user')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('user.get');
-        Route::post('/', [UserController::class, 'store'])->name('user.post');
-        Route::put('/{id}', [UserController::class, 'update'])->name('user.put');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('user.delete');
-
-        Route::get('/{id}', [UserController::class, 'show'])->name('user.find');
-    });
-    Route::prefix('mall')->group(function () {
-        Route::get('/', [MallController::class, 'index'])->name('mall.get');
-        Route::post('/', [MallController::class, 'store'])->name('mall.post');
-        Route::put('/{id}', [MallController::class, 'update'])->name('mall.put');
-        Route::delete('/{id}', [MallController::class, 'destroy'])->name('mall.delete');
-
-        Route::get('/{id}', [MallController::class, 'show'])->name('mall.find');
-    });
+Route::prefix('customer')->group(function () {
+    Route::get('/', [CustomerController::class, 'index']);
+    Route::get('/{id}', [CustomerController::class, 'show']);
+    Route::post('/', [CustomerController::class, 'store']);
+    Route::put('/{id}', [CustomerController::class, 'update']);
+    Route::delete('/{id}', [CustomerController::class, 'destroy']);
 });
 
+Route::prefix('job')->group(function () {
+    Route::get('/', [JobController::class, 'index']);
+    Route::get('/{id}', [JobController::class, 'show']);
+    Route::post('/', [JobController::class, 'store']);
+    Route::put('/{id}', [JobController::class, 'update']);
+    Route::delete('/{id}', [JobController::class, 'destroy']);
+});
+
+Route::prefix('mall')->group(function () {
+    Route::get('/', [MallController::class, 'index']);
+    Route::get('/{id}', [MallController::class, 'show']);
+    Route::post('/', [MallController::class, 'store']);
+    Route::put('/{id}', [MallController::class, 'update']);
+    Route::delete('/{id}', [MallController::class, 'destroy']);
+});
+
+// ==============================================================================================
 Route::post('/payment/notify', [PaymentController::class, 'notify'])->name('api.payment.notify');
