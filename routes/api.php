@@ -7,6 +7,8 @@ use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\JobController;
 use App\Http\Controllers\API\MallController;
+use App\Http\Controllers\API\StaffController;
+use App\Http\Controllers\API\VehicleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,24 @@ Route::prefix('mall')->group(function () {
     Route::post('/', [MallController::class, 'store']);
     Route::put('/{id}', [MallController::class, 'update']);
     Route::delete('/{id}', [MallController::class, 'destroy']);
+});
+
+Route::prefix('staff')->group(function () {
+    Route::get('/announcement', [StaffController::class, 'announcement']);
+
+    Route::get('/', [StaffController::class, 'index']);
+    Route::get('/{id}', [StaffController::class, 'show']);
+    Route::post('/', [StaffController::class, 'store']);
+    Route::put('/{id}', [StaffController::class, 'update']);
+    Route::delete('/{id}', [StaffController::class, 'destroy']);
+});
+
+Route::prefix('vehicle')->group(function () {
+    Route::get('/', [VehicleController::class, 'index']);
+    Route::get('/{id}', [VehicleController::class, 'show']);
+    Route::post('/', [VehicleController::class, 'store']);
+    Route::put('/{id}', [VehicleController::class, 'update']);
+    Route::delete('/{id}', [VehicleController::class, 'destroy']);
 });
 
 // ==============================================================================================
