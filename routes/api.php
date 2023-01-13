@@ -51,6 +51,7 @@ Route::prefix('mall')->group(function () {
 
 Route::prefix('staff')->group(function () {
     Route::get('/announcement', [StaffController::class, 'announcement']);
+    Route::post('/announcement', [StaffController::class, 'announcementStore']);
 
     Route::get('/', [StaffController::class, 'index']);
     Route::get('/{id}', [StaffController::class, 'show']);
@@ -65,6 +66,18 @@ Route::prefix('vehicle')->group(function () {
     Route::post('/', [VehicleController::class, 'store']);
     Route::put('/{id}', [VehicleController::class, 'update']);
     Route::delete('/{id}', [VehicleController::class, 'destroy']);
+});
+
+Route::get('cek', function () {
+    $admin = auth('api-admin')->user();
+    $user = auth('api-user')->user();
+    $staff = auth('api-staff')->user();
+
+    return response()->json([
+        'admin' => $admin,
+        'user' => $user,
+        'staff' => $staff
+    ], 200);
 });
 
 // ==============================================================================================

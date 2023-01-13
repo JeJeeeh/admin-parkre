@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
+    //status code exception
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -24,7 +25,7 @@ class ApiController extends Controller
             return response([
                 'status' => 'error',
                 'message' => $validator->errors()
-            ], 422);
+            ], 200);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -43,7 +44,7 @@ class ApiController extends Controller
                 'status' => 'error',
                 "message" => 'Login failed!'
             ];
-            return response($response, 401);
+            return response($response, 200);
         }
 
         $staff = Staff::where('username', $request->email)->first();
@@ -63,7 +64,7 @@ class ApiController extends Controller
             'status' => 'error',
             "message" => 'Login failed!'
         ];
-        return response($response, 401);
+        return response($response, 200);
     }
 
     public function register(Request $request)
